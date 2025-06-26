@@ -9,12 +9,12 @@ export async function loadEvents(client: Client) {
   for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);
     const event = await import(filePath);
-
     const eventName = file.replace(/\.(ts|js)$/, '');
+
     if (eventName === 'ready') {
       client.once('ready', (...args) => event.default(...args, client));
     } else {
-      client.on(eventName, event.default);
+      client.on(eventName, (...args) => event.default(...args, client));
     }
   }
 }
