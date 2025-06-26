@@ -18,7 +18,7 @@ export async function startBot() {
 
   try {
     await client.start(process.env.DISCORD_TOKEN!);
-    logger.info(`Bot conectado com sucesso como ${client.user?.tag}`);
+    logger.info(`Bot conectado como ${client.user?.tag}`);
   } catch (err) {
     logger.error(`Falha ao iniciar o bot: ${err}`);
     process.exit(1);
