@@ -1,4 +1,11 @@
-import { GuildMember, EmbedBuilder, TextChannel, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import {
+  GuildMember,
+  EmbedBuilder,
+  TextChannel,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} from 'discord.js';
 import { config } from 'dotenv';
 config();
 
@@ -7,12 +14,20 @@ export default async function guildMemberAdd(member: GuildMember) {
   if (!channel) return;
 
   const embed = new EmbedBuilder()
-    .setColor('#5865F2')
-    .setTitle('👋 Seja bem-vindo(a) à FuncZone!')
-    .setDescription('Agora você faz parte da nossa comunidade!\nRespeite as regras, divirta-se e aproveite ao máximo essa experiência.')
+    .setColor('#8c9cfc')
+    .setTitle('Seja bem-vindo(a) à FuncZone!')
+    .setDescription('Agora você faz parte da nossa comunidade! Respeite as regras, divirta-se e aproveite ao máximo essa experiência.')
     .addFields(
-      { name: '🧾 ID do usuário:', value: `${member.id}`, inline: false },
-      { name: '📊 Membros:', value: `Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`, inline: false }
+      {
+        name: '<:user:1372710533718867978> ID do usuário',
+        value: `${member.id}`,
+        inline: false,
+      },
+      {
+        name: '\u200b',
+        value: `<:members:1372710492761755709> Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`,
+        inline: false,
+      }
     )
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
     .setTimestamp();
@@ -21,18 +36,18 @@ export default async function guildMemberAdd(member: GuildMember) {
     new ButtonBuilder()
       .setLabel('Regras')
       .setStyle(ButtonStyle.Link)
-      .setURL('https://example.com/regras')
-      .setEmoji('📜'),
+      .setURL(process.env.RULES_URL!)
+      .setEmoji('1372713919365386302'),
     new ButtonBuilder()
       .setLabel('Avisos')
       .setStyle(ButtonStyle.Link)
-      .setURL('https://example.com/avisos')
-      .setEmoji('📢'),
+      .setURL(process.env.ANNOUNCEMENTS_URL!)
+      .setEmoji('1372713996011966545'),
     new ButtonBuilder()
       .setLabel('Suporte')
       .setStyle(ButtonStyle.Link)
-      .setURL('https://example.com/suporte')
-      .setEmoji('❓')
+      .setURL(process.env.SUPPORT_URL!)
+      .setEmoji('1372714108629291069')
   );
 
   await channel.send({ embeds: [embed], components: [row] });
