@@ -18,7 +18,7 @@ export default async function guildMemberAdd(member: GuildMember) {
     .setTitle('Seja bem-vindo(a) à FuncZone!')
     .setDescription(
       `Agora você faz parte da nossa comunidade! Respeite as regras, divirta-se e aproveite ao máximo essa experiência.\n\n` +
-      `<:user:1372710533718867978> **ID do usuário:** \`${member.id}\`\n` +
+      `<:user:1372710533718867978> **ID do usuário**: \`${member.id}\`\n` +
       `<:members:1372710492761755709> Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`
     )
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }));
