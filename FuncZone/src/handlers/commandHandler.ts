@@ -1,37 +1,18 @@
-import { Collection, Client, Message } from 'discord.js';
-import { readdirSync } from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
+import { BotClient } from '../client/BotClient';
 
-type Command = {
-  name: string;
-  description?: string;
-  aliases?: string[];
-  execute: (message: Message, args: string[]) => any;
-};
+export async function loadCommands(client: BotClient) {
+  client.commands = new Map();
 
-export const commands = new Collection<string, Command>();
-export const aliases = new Collection<string, string>();
+  const commandFiles = fs
+    .readdirSync(path.join(__dirname, '../commands'))
+    .filter(file => file.endsWith('.ts') || file.endsWith('.js'));
 
-export function loadCommands(client: Client) {
-  const commandsPath = path.join(__dirname, '..', 'commands');
-  const categories = readdirSync(commandsPath);
-
-  for (const category of categories) {
-    const commandFiles = readdirSync(path.join(commandsPath, category)).filter(file => file.endsWith('.ts') || file.endsWith('.js'));
-
-    for (const file of commandFiles) {
-      const commandPath = path.join(commandsPath, category, file);
-      import(commandPath).then((cmd) => {
-        const command: Command = cmd.default;
-        if (!command?.name || !command.execute) return;
-
-        commands.set(command.name, command);
-        if (command.aliases) {
-          for (const alias of command.aliases) {
-            aliases.set(alias, command.name);
-          }
-        }
-      });
+  for (const file of commandFiles) {
+    const command = await import(`../commands/${file}`);
+    if (command.name && typeof command.execute === 'function') {
+      client.commands.set(command.name, command);
     }
   }
 }
