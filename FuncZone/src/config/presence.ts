@@ -1,7 +1,7 @@
 import { PresenceData, ActivityType } from 'discord.js';
 
 /**
- * Define o status inicial do bot
+ * Define o status inicial do FuncZone
  */
 export const presenceConfig: PresenceData = {
   status: 'dnd',
