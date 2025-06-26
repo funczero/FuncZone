@@ -6,6 +6,8 @@ import { BotClient } from './client/BotClient';
 import messageCreate from './events/messageCreate';
 import { loadEvents } from './handlers/eventHandler';
 import { loadCommands } from './handlers/commandHandler';
+import { startBot } from './core/loader';
+startBot();
 
 // Verifica se o token está presente no .env
 if (!process.env.DISCORD_TOKEN) {
