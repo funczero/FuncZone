@@ -1,5 +1,3 @@
-// src/events/messageCreate.ts
-
 import { Message } from 'discord.js';
 import { botConfig } from '../config/botConfig';
 import { BotClient } from '../client/BotClient';
@@ -13,14 +11,15 @@ export default async function messageCreate(message: Message) {
 
   const args = message.content.slice(botConfig.prefix.length).trim().split(/\s+/);
   const commandName = args.shift()?.toLowerCase();
-  const command = client.commands?.get(commandName!);
 
-  if (!command) return;
+  if (!commandName || !client.commands.has(commandName)) return;
+
+  const command = client.commands.get(commandName);
 
   try {
-    await command.execute(message, args);
-  } catch (err) {
-    logger.error(`Erro ao executar comando "${commandName}": ${err}`);
-    await message.reply('Ocorreu um erro ao executar este comando.');
+    await command?.execute(message, args);
+  } catch (error) {
+    logger.error(`Erro ao executar o comando "${commandName}": ${error}`);
+    await message.reply('⚠️ Não foi possível executar este comando.');
   }
 }
