@@ -1,25 +1,26 @@
-import { Message } from 'discord.js';
-import { commands, aliases } from '../handlers/commandHandler';
-import { config } from 'dotenv';
-config();
+// src/events/messageCreate.ts
 
-const prefix = process.env.PREFIX!;
+import { Message } from 'discord.js';
+import { botConfig } from '../config/botConfig';
+import { BotClient } from '../client/BotClient';
+import { logger } from '../utils/logger';
 
 export default async function messageCreate(message: Message) {
-  if (message.author.bot || !message.content.startsWith(prefix)) return;
+  const client = message.client as BotClient;
 
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const cmdName = args.shift()!.toLowerCase();
+  if (message.author.bot || !message.guild) return;
+  if (!message.content.startsWith(botConfig.prefix)) return;
 
-  const command =
-    commands.get(cmdName) || commands.get(aliases.get(cmdName) || '');
+  const args = message.content.slice(botConfig.prefix.length).trim().split(/\s+/);
+  const commandName = args.shift()?.toLowerCase();
+  const command = client.commands?.get(commandName!);
 
   if (!command) return;
 
   try {
     await command.execute(message, args);
   } catch (err) {
-    console.error(`Erro ao executar o comando ${cmdName}:`, err);
-    await message.reply('⚠️ Não foi possível executar este comando.');
+    logger.error(`Erro ao executar comando "${commandName}": ${err}`);
+    await message.reply('Ocorreu um erro ao executar este comando.');
   }
 }
