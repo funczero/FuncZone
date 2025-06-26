@@ -14,7 +14,7 @@ export default async function guildMemberAdd(member: GuildMember) {
   if (!channel) return;
 
   const embed = new EmbedBuilder()
-    .setColor('#5865F2')
+    .setColor('#8c9cfc')
     .setTitle('Seja bem-vindo(a) à FuncZone!')
     .setDescription(
       `Agora você faz parte da nossa comunidade! Respeite as regras, divirta-se e aproveite ao máximo essa experiência.\n\n` +
@@ -41,5 +41,9 @@ export default async function guildMemberAdd(member: GuildMember) {
       .setEmoji('1372714108629291069')
   );
 
-  await channel.send({ embeds: [embed], components: [row] });
+  await channel.send({
+    content: `${member}`,
+    embeds: [embed],
+    components: [row],
+  });
 }
