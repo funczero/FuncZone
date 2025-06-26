@@ -1,27 +1,65 @@
-import { Message, PermissionsBitField } from 'discord.js';
+import {
+  Message,
+  EmbedBuilder,
+  User,
+  PermissionsBitField,
+} from 'discord.js';
 
 export const name = 'clear';
-export const description = 'Apaga uma quantidade de mensagens no canal.';
+export const description = 'Apaga mensagens do canal, com suporte a menção de usuário.';
+export const usage = '.clear <quantidade> [@usuário]';
+export const userPermissions = ['ManageMessages'];
+export const botPermissions = ['ManageMessages'];
+export const deleteMessage = true;
 
-export async function execute(message: Message, args: string[]) {
-  // Verifica se o autor tem permissão para gerenciar mensagens
-  if (!message.member?.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
-    return message.reply('Você não tem permissão para apagar mensagens.');
-  }
+export async function execute(message: Message, args: string[]): Promise<void> {
+  const quantidade = parseInt(args[0], 10);
+  const usuario: User | undefined = message.mentions.users.first();
 
-  const amount = parseInt(args[0], 10);
+  if (!quantidade || isNaN(quantidade) || quantidade < 1 || quantidade > 100) {
+    const embedErro = new EmbedBuilder()
+      .setColor('Yellow')
+      .setDescription('⚠️ Só é possível excluir de 1 a 100 mensagens por vez.');
 
-  // Valida o argumento
-  if (isNaN(amount) || amount < 1 || amount > 100) {
-    return message.reply('Forneça um número entre 1 e 100 para apagar as mensagens.');
+    await message.channel.send({
+      embeds: [embedErro],
+      allowedMentions: { repliedUser: false },
+    });
+    return;
   }
 
   try {
-    await message.channel.bulkDelete(amount, true);
-    const reply = await message.channel.send(`${amount} mensagens apagadas com sucesso.`);
-    setTimeout(() => reply.delete().catch(() => {}), 5000);
+    const mensagens = await message.channel.messages.fetch({ limit: 100 });
+
+    const mensagensParaApagar = Array.from(
+      mensagens
+        .filter((msg) =>
+          usuario
+            ? msg.author.id === usuario.id && !msg.pinned
+            : !msg.pinned
+        )
+        .values()
+    ).slice(0, quantidade);
+
+    const apagadas = await message.channel.bulkDelete(mensagensParaApagar, true);
+
+    const feedbackMessage = await message.channel.send(
+      `🧹 ${apagadas.size} mensagens foram apagadas${usuario ? ` de ${usuario}` : ''}.`
+    );
+
+    setTimeout(() => {
+      feedbackMessage.delete().catch(() => null);
+    }, 4000);
   } catch (error) {
-    console.error('Erro ao apagar mensagens:', error);
-    return message.reply('⚠️ Não foi possível apagar as mensagens.');
+    console.error(error);
+
+    const embedErro = new EmbedBuilder()
+      .setColor('Red')
+      .setDescription('Não foi possível apagar as mensagens.');
+
+    await message.channel.send({
+      embeds: [embedErro],
+      allowedMentions: { repliedUser: false },
+    });
   }
 }
