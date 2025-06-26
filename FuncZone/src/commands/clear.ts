@@ -4,6 +4,7 @@ import {
   User,
   PermissionsBitField,
 } from 'discord.js';
+import { icons } from '../../assets/icons';
 
 export const name = 'clear';
 export const description = 'Apaga mensagens do canal, com suporte a menção de usuário.';
@@ -19,7 +20,7 @@ export async function execute(message: Message, args: string[]): Promise<void> {
   if (!quantidade || isNaN(quantidade) || quantidade < 1 || quantidade > 100) {
     const embedErro = new EmbedBuilder()
       .setColor('Yellow')
-      .setDescription('⚠️ Só é possível excluir de 1 a 100 mensagens por vez.');
+      .setDescription(`${icons.warning} Só é possível excluir de 1 a 100 mensagens por vez.`);
 
     await message.channel.send({
       embeds: [embedErro],
@@ -44,7 +45,7 @@ export async function execute(message: Message, args: string[]): Promise<void> {
     const apagadas = await message.channel.bulkDelete(mensagensParaApagar, true);
 
     const feedbackMessage = await message.channel.send(
-      `🧹 ${apagadas.size} mensagens foram apagadas${usuario ? ` de ${usuario}` : ''}.`
+      `${icons.success} ${apagadas.size} mensagens foram apagadas${usuario ? ` de ${usuario}` : ''}.`
     );
 
     setTimeout(() => {
@@ -55,7 +56,7 @@ export async function execute(message: Message, args: string[]): Promise<void> {
 
     const embedErro = new EmbedBuilder()
       .setColor('Red')
-      .setDescription('Não foi possível apagar as mensagens.');
+      .setDescription(`${icons.warning} Não foi possível apagar as mensagens.`);
 
     await message.channel.send({
       embeds: [embedErro],
