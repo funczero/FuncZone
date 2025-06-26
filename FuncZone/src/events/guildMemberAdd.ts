@@ -16,18 +16,10 @@ export default async function guildMemberAdd(member: GuildMember) {
   const embed = new EmbedBuilder()
     .setColor('#8c9cfc')
     .setTitle('Seja bem-vindo(a) à FuncZone!')
-    .setDescription('Agora você faz parte da nossa comunidade! Respeite as regras, divirta-se e aproveite ao máximo essa experiência.')
-    .addFields(
-      {
-        name: '<:user:1372710533718867978> ID do usuário',
-        value: `${member.id}`,
-        inline: false,
-      },
-      {
-        name: '\u200b',
-        value: `<:members:1372710492761755709> Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`,
-        inline: false,
-      }
+    .setDescription(
+      `Agora você faz parte da nossa comunidade! Respeite as regras, divirta-se e aproveite ao máximo essa experiência.\n\n` +
+      `<:user:1372710533718867978> **ID do usuário:** \`${member.id}\`\n` +
+      `<:members:1372710492761755709> Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`
     )
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
     .setTimestamp();
