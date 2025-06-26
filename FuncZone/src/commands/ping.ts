@@ -1,10 +1,12 @@
 import { Message } from 'discord.js';
 
-export const name = 'ping';
-export const description = 'Retorna o ping do bot.';
-
-export async function execute(message: Message, args: string[]) {
-  const sent = await message.channel.send('🏓 Pingando...');
-  const latency = sent.createdTimestamp - message.createdTimestamp;
-  await sent.edit(`🏓 Pong! Latência: \`${latency}ms\``);
-}
+export default {
+  name: 'ping',
+  aliases: ['latency'],
+  description: 'Mostra a latência do bot.',
+  async execute(message: Message, args: string[]) {
+    const sent = await message.reply('🏓 Calculando ping...');
+    const latency = sent.createdTimestamp - message.createdTimestamp;
+    await sent.edit(`🏓 Pong! Latência: **${latency}ms**`);
+  },
+};
