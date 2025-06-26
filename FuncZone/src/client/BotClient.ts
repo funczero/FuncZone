@@ -1,23 +1,33 @@
-import { Client, GatewayIntentBits, Partials } from 'discord.js';
+import {
+  Client,
+  GatewayIntentBits,
+  Partials,
+  Collection,
+} from 'discord.js';
 import { logger } from '../utils/logger';
+import type { Command } from '../types';
 
 /**
  * Classe personalizada do cliente do Discord
  * Estende o Client padrão para centralizar configuração do bot
  */
 export class BotClient extends Client {
+  public commands: Collection<string, Command>;
+
   constructor() {
     super({
       // Intents mínimos e seguros para operação inicial
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
       ],
       // Permite manipular dados parciais como membros offline
-      partials: [
-        Partials.GuildMember,
-      ],
+      partials: [Partials.GuildMember],
     });
+
+    this.commands = new Collection();
   }
 
   /**
