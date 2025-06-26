@@ -3,10 +3,9 @@ config();
 
 import { logger } from './utils/logger';
 import { BotClient } from './client/BotClient';
-import onReady from './events/ready';
-import guildMemberAdd from './events/guildMemberAdd';
+import { loadEvents } from './handlers/eventHandler';
 
-// • Verifica se o token está presente no .env
+// Verifica se o token está presente no .env
 if (!process.env.DISCORD_TOKEN) {
   logger.error('Token do bot não encontrado no arquivo .env!');
   process.exit(1);
@@ -14,9 +13,10 @@ if (!process.env.DISCORD_TOKEN) {
 
 const client = new BotClient();
 
-// Eventos principais
-client.once('ready', () => onReady(client));
-client.on('guildMemberAdd', guildMemberAdd);
+// Carrega eventos automaticamente
+loadEvents(client).then(() => {
+  logger.info('Eventos carregados com sucesso.');
+});
 
 // Eventos de erro
 client.on('error', (error) => {
