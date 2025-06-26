@@ -4,7 +4,7 @@ import { logger } from '../utils/logger';
 export class BotClient extends Client {
   constructor() {
     super({
-      // Intents necessários para guildas e membros
+      // • Intents necessários para guildas e membros
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
