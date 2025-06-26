@@ -4,26 +4,38 @@ import { loadCommands } from '../handlers/commandHandler';
 import { loadEvents } from '../handlers/eventHandler';
 
 /**
- * Função principal para iniciar o bot
+ * Inicializa o bot carregando eventos, comandos e conectando ao Discord.
  */
 export async function startBot(): Promise<void> {
   const client = new BotClient();
 
   try {
-    // Carrega eventos e comandos
+    logger.info('Carregando eventos...');
     await loadEvents(client);
+
+    logger.info('Carregando comandos...');
     await loadCommands(client);
 
-    // Eventos globais de erro
-    client.on('error', (error) => logger.error(`Erro interno: ${error.message}`));
-    process.on('unhandledRejection', (reason) => logger.error(`Rejeição não tratada: ${reason}`));
-    process.on('uncaughtException', (err) => logger.error(`Exceção não capturada: ${err.message}`));
+    // Escuta erros do cliente e do processo
+    client.on('error', (error) => logger.error(`Erro do cliente: ${error.message}`));
+    process.on('unhandledRejection', (reason: unknown) =>
+      logger.error(`Rejeição não tratada: ${String(reason)}`),
+    );
+    process.on('uncaughtException', (error: Error) =>
+      logger.error(`Exceção não capturada: ${error.message}`),
+    );
 
     // Inicia o bot
-    await client.start(process.env.DISCORD_TOKEN!);
-    logger.info(`Bot conectado como ${client.user?.tag}`);
-  } catch (err) {
-    logger.error(`Falha ao iniciar o bot: ${err}`);
+    const token = process.env.DISCORD_TOKEN;
+    if (!token) {
+      logger.fatal('Token do Discord não encontrado no ambiente.');
+      process.exit(1);
+    }
+
+    await client.start(token);
+    logger.success(`Bot conectado como ${client.user?.tag}`);
+  } catch (error) {
+    logger.fatal(`Falha crítica ao iniciar o bot: ${String(error)}`);
     process.exit(1);
   }
 }
