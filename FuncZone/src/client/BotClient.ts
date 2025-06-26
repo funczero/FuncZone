@@ -8,22 +8,25 @@ import { logger } from '../utils/logger';
 import type { Command } from '../types';
 
 /**
- * Classe personalizada do cliente do Discord
- * Estende o Client padrão para centralizar configuração do bot
+ * Classe personalizada do cliente do Discord.
+ * Estende a classe padrão Client para centralizar lógica do bot.
  */
 export class BotClient extends Client {
+  /**
+   * Coleção de comandos carregados dinamicamente
+   */
   public commands: Collection<string, Command>;
 
   constructor() {
     super({
-      // Intents mínimos e seguros para operação inicial
+      // Intents mínimos recomendados para bots modernos
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
       ],
-      // Permite manipular dados parciais como membros offline
+      // Permite lidar com membros que não foram totalmente carregados
       partials: [Partials.GuildMember],
     });
 
@@ -32,15 +35,15 @@ export class BotClient extends Client {
 
   /**
    * Inicia o login do bot com o token fornecido
-   * @param token Token do Discord (via .env)
+   * @param token Token do Discord (.env)
    */
   public async start(token: string): Promise<void> {
     try {
-      logger.info('Iniciando login no Discord...');
+      logger.info('Iniciando autenticação no Discord...');
       await this.login(token);
-      logger.info('Login concluído com sucesso!');
+      logger.info(`Bot autenticado com sucesso!`);
     } catch (error) {
-      logger.error(`Erro durante o login: ${(error as Error).message}`);
+      logger.error(`Erro ao autenticar: ${(error as Error).message}`);
       process.exit(1);
     }
   }
