@@ -3,9 +3,12 @@ import { botConfig } from '../config/botConfig';
 import { BotClient } from '../client/BotClient';
 import { logger } from '../utils/logger';
 
-export default async function messageCreate(message: Message) {
-  const client = message.client as BotClient;
-
+/**
+ * Evento executado ao receber uma nova mensagem
+ * @param message A mensagem recebida
+ * @param client Instância do BotClient
+ */
+export default async function messageCreate(message: Message, client: BotClient) {
   if (message.author.bot || !message.guild) return;
   if (!message.content.startsWith(botConfig.prefix)) return;
 
