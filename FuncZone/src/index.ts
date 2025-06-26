@@ -3,7 +3,9 @@ config();
 
 import { logger } from './utils/logger';
 import { BotClient } from './client/BotClient';
+import messageCreate from './events/messageCreate';
 import { loadEvents } from './handlers/eventHandler';
+import { loadCommands } from './handlers/commandHandler';
 
 // Verifica se o token está presente no .env
 if (!process.env.DISCORD_TOKEN) {
@@ -18,7 +20,13 @@ loadEvents(client).then(() => {
   logger.info('Eventos carregados com sucesso.');
 });
 
-// Eventos de erro
+// Carrega comandos
+loadCommands(client);
+
+// Eventos dinâmicos
+client.on('messageCreate', messageCreate);
+
+// Tratamento de erros
 client.on('error', (error) => {
   logger.error(`Erro interno no cliente Discord: ${error.message}`);
 });
