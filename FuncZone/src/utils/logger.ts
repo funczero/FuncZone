@@ -1,26 +1,31 @@
 import winston from 'winston';
-import chalk from 'chalk';
+import moment from 'moment-timezone';
 
-const customFormat = winston.format.printf(({ level, message, timestamp }) => {
-  const color = {
-    info: chalk.blueBright,
-    warn: chalk.yellow,
-    error: chalk.red,
-    debug: chalk.gray,
-  }[level] || chalk.white;
+// Define fuso horário
+const timezone = 'America/Sao_Paulo';
 
-  return `${chalk.dim(timestamp)} [${color(level.toUpperCase())}] ${message}`;
-});
+// Define cores personalizadas
+const colors = {
+  info: 'blue',
+  warn: 'yellow',
+  error: 'red',
+  debug: 'magenta',
+};
 
+// Aplica as cores no Winston
+winston.addColors(colors);
+
+// Cria o logger customizado
 export const logger = winston.createLogger({
   level: 'debug',
   format: winston.format.combine(
-    winston.format.timestamp({ format: 'HH:mm:ss' }),
-    customFormat
+    winston.format.colorize({ all: true }),
+    winston.format.printf(({ level, message }) => {
+      const timestamp = moment().tz(timezone).format('DD/MM/YYYY HH:mm:ss');
+      return `[${timestamp}] [${level}] ${message}`;
+    })
   ),
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' })
   ],
 });
