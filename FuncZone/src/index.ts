@@ -6,7 +6,7 @@ import { BotClient } from './client/BotClient';
 import onReady from './events/ready';
 import guildMemberAdd from './events/guildMemberAdd';
 
-// Verifica se o token está presente no .env
+// • Verifica se o token está presente no .env
 if (!process.env.DISCORD_TOKEN) {
   logger.error('Token do bot não encontrado no arquivo .env!');
   process.exit(1);
