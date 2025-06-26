@@ -14,15 +14,14 @@ export default async function guildMemberAdd(member: GuildMember) {
   if (!channel) return;
 
   const embed = new EmbedBuilder()
-    .setColor('#8c9cfc')
+    .setColor('#5865F2')
     .setTitle('Seja bem-vindo(a) à FuncZone!')
     .setDescription(
       `Agora você faz parte da nossa comunidade! Respeite as regras, divirta-se e aproveite ao máximo essa experiência.\n\n` +
       `<:user:1372710533718867978> **ID do usuário:** \`${member.id}\`\n` +
       `<:members:1372710492761755709> Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`
     )
-    .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
-    .setTimestamp();
+    .setThumbnail(member.user.displayAvatarURL({ dynamic: true }));
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
