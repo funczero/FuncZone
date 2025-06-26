@@ -8,7 +8,7 @@ const customFormat = winston.format.printf(({ level, message, timestamp }) => {
     error: chalk.red,
     debug: chalk.gray,
   }[level] || chalk.white;
-//!
+
   return `${chalk.dim(timestamp)} [${color(level.toUpperCase())}] ${message}`;
 });
 
