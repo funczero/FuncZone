@@ -1,7 +1,13 @@
-import { Message } from 'discord.js';
+import type { Message } from 'discord.js';
 
 export interface Command {
+  
   name: string;
   description?: string;
-  execute: (message: Message, args: string[]) => Promise<any> | void;
+  aliases?: string[];
+  adminOnly?: boolean;
+  permissions?: string[];
+  cooldown?: number;
+
+  execute: (message: Message, args: string[]) => Promise<unknown> | void;
 }
