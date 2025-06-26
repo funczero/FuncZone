@@ -14,7 +14,7 @@ export async function loadCommands(client: BotClient) {
       const command: Command = await import(filePath);
       if (command.name && typeof command.execute === 'function') {
         client.commands.set(command.name, command);
-        logger.info(`🔧 Comando carregado: ${command.name}`);
+        logger.info(`Comando carregado: ${command.name}`);
       }
     } catch (err) {
       logger.warn(`⚠️ Não foi possível carregar o comando ${file}: ${err}`);
