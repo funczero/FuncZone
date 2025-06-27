@@ -6,7 +6,7 @@
 import { config } from 'dotenv';
 config();
 
-import { logger } from './utils/logger';
+import { logger } from '../utils/logger';
 import { startBot } from './core/loader';
 
 // Verificação crítica: token do bot
