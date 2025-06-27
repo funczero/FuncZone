@@ -6,8 +6,8 @@
 import { config } from 'dotenv';
 config();
 
-import { logger } from './utils/logger';
-import { startBot } from './core/loader';
+import { logger } from '@utils/logger';
+import { startBot } from '@core/loader';
 
 // Verificação crítica: token do bot
 if (!process.env.DISCORD_TOKEN) {
