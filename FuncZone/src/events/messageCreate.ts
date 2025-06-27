@@ -1,8 +1,8 @@
 import type { Message } from 'discord.js';
-import { botConfig } from '../config/botConfig';
-import type { BotClient } from '../client/BotClient';
-import { logger } from '../utils/logger';
-import type { Command } from '../types';
+import { botConfig } from '@config/botConfig';
+import type { BotClient } from '@client/BotClient';
+import { logger } from '@utils/logger';
+import type { Command } from '@types';
 
 /**
  * Evento disparado ao receber uma nova mensagem
