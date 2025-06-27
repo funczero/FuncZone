@@ -4,7 +4,7 @@ import {
   Partials,
   Collection,
 } from 'discord.js';
-import { logger } from '@utils';
+import { logger } from '@utils/logger';
 import type { Command } from '@types';
 
 /**
