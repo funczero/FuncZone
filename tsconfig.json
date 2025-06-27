@@ -11,7 +11,12 @@
     "baseUrl": ".",
     "paths": {
       "@assets/*": ["assets/*"]
+      "@utils/*": ["utils/*"]
+      "@client/*": ["client/*"]
+      "@config/*": ["config/*"]
+      "@commands/*": ["commands/*"]
     }
   },
-  "include": ["src", "assets"]
+  "include": ["src", "assets", "utils",
+    "client", "config", "commands"]
 }
