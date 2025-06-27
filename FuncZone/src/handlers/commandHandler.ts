@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'url';
-import { BotClient } from '../client/BotClient';
-import type { Command } from '../types';
-import { logger } from '../utils/logger';
+import { BotClient } from '@client/BotClient';
+import type { Command } from '@types';
+import { logger } from '@utils/logger';
 
 /**
  * Carrega recursivamente todos os comandos da pasta /commands
