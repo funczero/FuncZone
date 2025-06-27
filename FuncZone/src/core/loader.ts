@@ -1,7 +1,7 @@
-import { BotClient } from '@client/BotClient';
-import { logger } from '@utils/logger';
-import { loadCommands } from '@handlers/commandHandler';
-import { loadEvents } from '@handlers/eventHandler';
+import { BotClient } from './client/BotClient';
+import { logger } from './utils/logger';
+import { loadCommands } from './handlers/commandHandler';
+import { loadEvents } from './handlers/eventHandler';
 
 /**
  * Inicializa o bot carregando eventos, comandos e conectando ao Discord.
