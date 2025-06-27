@@ -1,33 +1,77 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
+import path from 'path';
+import chalk from 'chalk';
 
 const dependencies = [
   'chalk',
   'discord.js',
   'dotenv',
   'winston',
-  'moment-timezone',
+  'moment-timezone'
 ];
 
 const devDependencies = [
   'typescript',
   'ts-node',
   'tsconfig-paths',
-  '@types/node',
+  '@types/node'
 ];
 
-function install(pkg: string, isDev: boolean = false) {
+const rootDir = process.cwd();
+const packageJsonPath = path.join(rootDir, 'package.json');
+
+function logInfo(msg: string) {
+  console.log(chalk.cyan(`[INFO] ${msg}`));
+}
+
+function logSuccess(msg: string) {
+  console.log(chalk.green(`[OK] ${msg}`));
+}
+
+function logError(msg: string) {
+  console.error(chalk.red(`[ERRO] ${msg}`));
+}
+
+function install(pkg: string, isDev = false) {
   try {
     require.resolve(pkg);
+    logSuccess(`${pkg} já está instalado.`);
   } catch {
-    console.log(`[AUTO-INSTALL] Instalando: ${pkg}...`);
-    execSync(`npm install ${isDev ? '--save-dev' : ''} ${pkg}`, { stdio: 'inherit' });
+    logInfo(`Instalando ${pkg}...`);
+    try {
+      execSync(`npm install ${isDev ? '--save-dev' : ''} ${pkg}`, { stdio: 'inherit' });
+      logSuccess(`${pkg} instalado com sucesso.`);
+    } catch {
+      logError(`Falha ao instalar ${pkg}`);
+    }
   }
 }
 
-console.log('[AUTO-INSTALL] Verificando dependências...');
+logInfo('Verificando ambiente...');
 
-for (const pkg of dependencies) install(pkg, false);
-for (const pkg of devDependencies) install(pkg, true);
+if (!fs.existsSync(packageJsonPath)) {
+  logError('package.json não encontrado. Execute "npm init -y" antes de continuar.');
+  process.exit(1);
+}
 
-console.log('[AUTO-INSTALL] Instalação completa.');
+try {
+  const nodeVersion = process.version;
+  const npmVersion = execSync('npm -v').toString().trim();
+  logSuccess(`Node: ${nodeVersion}`);
+  logSuccess(`NPM: ${npmVersion}`);
+} catch {
+  logError('Falha ao obter versão do Node ou NPM');
+}
+
+if (!fs.existsSync(path.join(rootDir, '.git'))) {
+  logInfo('Git não inicializado. Considere rodar "git init" para controle de versão.');
+}
+
+logInfo('Instalando dependências...');
+dependencies.forEach(pkg => install(pkg, false));
+
+logInfo('Instalando dependências de desenvolvimento...');
+devDependencies.forEach(pkg => install(pkg, true));
+
+logSuccess('Setup concluído com sucesso!');
