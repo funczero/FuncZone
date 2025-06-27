@@ -10,18 +10,27 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@assets/*": ["assets/*"]
-      "@client/*": ["client/*"]
-      "@config/*": ["config/*"]
-      "@core/*": ["core/*"]
-      "@types/*": ["types/*"]
-      "@handlers/*": ["handlers/*"]
-      "@events/*": ["events/*"]
-      "@utils/*": ["utils/*"]
+      "@assets/*": ["assets/*"],
+      "@client/*": ["client/*"],
+      "@config/*": ["config/*"],
+      "@core/*": ["core/*"],
+      "@types/*": ["types/*"],
+      "@handlers/*": ["handlers/*"],
+      "@events/*": ["events/*"],
+      "@utils/*": ["utils/*"],
       "@commands/*": ["commands/*"]
     }
   },
-  "include": ["src", "assets", "utils",
-    "client", "config", "commands", "core",
-    "events", "types", "handlers", ]
+  "include": [
+    "src",
+    "assets",
+    "utils",
+    "client",
+    "config",
+    "commands",
+    "core",
+    "events",
+    "types",
+    "handlers"
+  ]
 }
