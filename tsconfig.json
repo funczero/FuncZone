@@ -8,17 +8,17 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@assets/*": ["../assets/*"],
-      "@client/*": ["client/*"],
-      "@config/*": ["config/*"],
-      "@core/*": ["core/*"],
-      "@types/*": ["types/*"],
-      "@handlers/*": ["handlers/*"],
-      "@events/*": ["events/*"],
-      "@utils/*": ["utils/*"],
-      "@commands/*": ["commands/*"]
+      "@utils/*": ["src/utils/*"],
+      "@client/*": ["src/client/*"],
+      "@commands/*": ["src/commands/*"],
+      "@handlers/*": ["src/handlers/*"],
+      "@events/*": ["src/events/*"],
+      "@core/*": ["src/core/*"],
+      "@config/*": ["src/config/*"],
+      "@types/*": ["src/types/*"],
+      "@assets/*": ["assets/*"]
     }
   },
   "include": ["src", "assets"]
