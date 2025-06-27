@@ -1,6 +1,6 @@
 import { GuildMember, TextChannel } from 'discord.js';
 import { config } from 'dotenv';
-import { logger } from '@utils/logger';
+import { logger } from '../utils/logger';
 
 config();
 
