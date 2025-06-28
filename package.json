@@ -6,11 +6,11 @@
   "main": "dist/index.js",
   "scripts": {
     "prepare": "npm install tsconfig-paths",
-    "postinstall": "ts-node src/scripts/preinstall.ts",
+    "postinstall": "ts-node ./src/scripts/preinstall.ts",
     "build": "./node_modules/.bin/tsc --project tsconfig.build.json",
     "build:clean": "rm -rf dist && npm run build",
-    "start": "npm run prepare && npm run build && node -r tsconfig-paths/register dist/index.js",
-    "dev": "npm run prepare && ts-node --require tsconfig-paths/register src/index.ts",
+    "start": "npm run prepare && npm run build && node -r tsconfig-paths/register ./dist/index.js",
+    "dev": "npm run prepare && ts-node --require tsconfig-paths/register ./src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "keywords": ["discord", "bot", "typescript", "modular", "automation"],
