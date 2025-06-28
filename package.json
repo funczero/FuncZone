@@ -9,7 +9,7 @@
     "postinstall": "ts-node src/scripts/preinstall.ts",
     "build": "tsc --project tsconfig.build.json",
     "build:clean": "rm -rf dist && npm run build",
-    "start": "npm run prepare && npm run build && node -r tsconfig-paths/register dist/index.js"
+    "start": "npm run prepare && npm run build && node -r tsconfig-paths/register dist/index.js",
     "dev": "npm run prepare && ts-node --require tsconfig-paths/register src/index.ts",
     "lint": "eslint . --ext .ts"
   },
