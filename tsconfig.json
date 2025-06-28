@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2021",
-    "module": "commonjs",
+    "module": "ES2020",
+    "moduleResolution": "node",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
@@ -10,15 +11,15 @@
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {
-      "@assets/*": ["../assets/*"],
-      "@client/*": ["client/*"],
-      "@config/*": ["config/*"],
-      "@core/*": ["core/*"],
-      "@types/*": ["types/*"],
-      "@handlers/*": ["handlers/*"],
-      "@events/*": ["events/*"],
-      "@utils/*": ["utils/*"],
-      "@commands/*": ["commands/*"]
+      "#assets/*": ["assets/*"],
+      "#client/*": ["client/*"],
+      "#config/*": ["config/*"],
+      "#core/*": ["core/*"],
+      "#commands/*": ["commands/*"],
+      "#events/*": ["events/*"],
+      "#handlers/*": ["handlers/*"],
+      "#types/*": ["types/*"],
+      "#utils/*": ["utils/*"]
     }
   },
   "include": ["src"],
