@@ -1,34 +1,34 @@
-// Carrega variáveis do .env
-import 'dotenv/config'
+import 'dotenv/config';
+import { logger } from './utils/logger';
+import { startBot } from './core/loader';
 
-// Core
-import { logger } from './utils/logger'
-import { startBot } from './core/loader'
-
-// Verificação de variáveis obrigatórias
-const REQUIRED_ENV = ['DISCORD_TOKEN']
-const missing = REQUIRED_ENV.filter(key => !process.env[key])
+// Variáveis obrigatórias
+const REQUIRED_ENV = ['DISCORD_TOKEN'] as const;
+const missing = REQUIRED_ENV.filter(key => !process.env[key]);
 
 if (missing.length) {
-  logger.error(`Variáveis ausentes: ${missing.join(', ')}`)
-  process.exit(1)
+  logger.fatal(`Variáveis ausentes: ${missing.join(', ')}`);
+  process.exit(1);
 }
 
-// Captura global de erros
+// Handler global de erros
 process.on('uncaughtException', err => {
-  logger.error('Erro não tratado:', err)
-  process.exit(1)
-})
+  logger.fatal(`Exceção não capturada: ${err instanceof Error ? err.stack : err}`);
+  process.exit(1);
+});
 
 process.on('unhandledRejection', reason => {
-  logger.error('Promessa rejeitada:', reason)
-  process.exit(1)
-})
+  logger.fatal(`Rejeição não tratada: ${reason instanceof Error ? reason.stack : reason}`);
+  process.exit(1);
+});
 
-// Bootstrap
-startBot()
-  .then(() => logger.info('Bot iniciado com sucesso!'))
-  .catch(err => {
-    logger.error('Erro ao iniciar o bot:', err)
-    process.exit(1)
-  })
+// Inicia o bot
+(async () => {
+  try {
+    await startBot();
+    logger.success('Bot iniciado com sucesso!');
+  } catch (error) {
+    logger.fatal(`Falha ao iniciar o bot: ${error instanceof Error ? error.stack : error}`);
+    process.exit(1);
+  }
+})();
