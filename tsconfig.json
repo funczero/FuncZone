@@ -9,18 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "baseUrl": "./src",
-    "paths": {
-      "#assets/*": ["assets/*"],
-      "#client/*": ["client/*"],
-      "#config/*": ["config/*"],
-      "#core/*": ["core/*"],
-      "#commands/*": ["commands/*"],
-      "#events/*": ["events/*"],
-      "#handlers/*": ["handlers/*"],
-      "#types/*": ["types/*"],
-      "#utils/*": ["utils/*"]
-    }
+    "baseUrl": "./src"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
