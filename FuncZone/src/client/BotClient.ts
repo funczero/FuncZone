@@ -2,45 +2,44 @@ import {
   Client,
   GatewayIntentBits,
   Partials,
-  Collection,
+  Collection
 } from 'discord.js';
 import { logger } from '../utils/logger';
-import type { Command } from '../types/index';
+import type { Command } from '../types';
 
 /**
- * Cliente estendido do Discord com estrutura personalizada para o bot.
+ * Cliente estendido com suporte a comandos personalizados.
  */
 export class BotClient extends Client {
-  /** Coleção de comandos carregados dinamicamente */
+  /** Registro dos comandos do bot */
   public commands: Collection<string, Command>;
 
   constructor() {
     super({
-      // Intents essenciais para bots modernos
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.MessageContent
       ],
-      // Permite lidar com dados parciais de membros
-      partials: [Partials.GuildMember],
+      partials: [Partials.GuildMember]
     });
 
     this.commands = new Collection();
   }
 
   /**
-   * Inicia o bot com o token fornecido
-   * @param token Token do bot (via .env)
+   * Autentica e conecta o bot ao Discord
+   * @param token Token de autenticação (via .env)
    */
   public async start(token: string): Promise<void> {
     try {
-      logger.info('Iniciando autenticação com o Discord...');
+      logger.info('Conectando ao Discord...');
       await this.login(token);
-      logger.info(`Bot autenticado como ${this.user?.tag}`);
+      logger.success(`Autenticado como ${this.user?.tag}`);
     } catch (error) {
-      logger.error(`Erro durante o login: ${(error as Error).message}`);
+      const message = error instanceof Error ? error.message : String(error);
+      logger.fatal(`Falha na autenticação: ${message}`);
       process.exit(1);
     }
   }
