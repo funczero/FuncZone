@@ -1,15 +1,28 @@
 {
   "compilerOptions": {
+    /* Output */
+    "outDir": "./dist",
+    "rootDir": "./src",
+
+    /* Language & Modules */
     "target": "ES2021",
     "module": "ES2020",
     "moduleResolution": "node",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
+    "moduleDetection": "force",
     "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": false,
+
+    /* Strictness */
+    "strict": true,
+    "skipLibCheck": true,
+
+    /* Paths & Aliases */
     "baseUrl": "./src"
+
+    // "paths": { "#utils/*": ["utils/*"] }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
