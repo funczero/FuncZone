@@ -4,8 +4,8 @@ import {
   Partials,
   Collection,
 } from 'discord.js';
-import { logger } from '@utils/logger.ts';
-import type { Command } from '@types/index.ts';
+import { logger } from '@utils/logger';
+import type { Command } from '@types/index';
 
 /**
  * Cliente estendido do Discord com estrutura personalizada para o bot.
