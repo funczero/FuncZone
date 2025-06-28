@@ -1,13 +1,24 @@
 {
   "name": "funczone",
   "version": "1.0.0",
-  "type": "commonjs",
+  "type": "module",
   "main": "dist/index.js",
+  "imports": {
+    "#utils/*": "./dist/utils/*.js",
+    "#core/*": "./dist/core/*.js",
+    "#client/*": "./dist/client/*.js",
+    "#config/*": "./dist/config/*.js",
+    "#assets/*": "./dist/assets/*.js",
+    "#commands/*": "./dist/commands/*.js",
+    "#events/*": "./dist/events/*.js",
+    "#handlers/*": "./dist/handlers/*.js",
+    "#types/*": "./dist/types/*.js"
+  },
   "scripts": {
     "preinstall": "ts-node scripts/preinstall.ts",
     "build": "tsc",
-    "start": "npm run preinstall && npm run build && node -r tsconfig-paths/register dist/index.js",
-    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "npm run preinstall && npm run build && node dist/index.js",
+    "dev": "ts-node src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
@@ -15,7 +26,6 @@
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
     "moment-timezone": "^0.5.40",
-    "tsconfig-paths": "^4.2.0",
     "winston": "^3.11.0"
   },
   "devDependencies": {
