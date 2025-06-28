@@ -9,8 +9,8 @@
     "module": "ES2020",
     "moduleResolution": "node",
     "moduleDetection": "force",
-    "resolveJsonModule": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
     "allowArbitraryExtensions": false,
@@ -19,10 +19,16 @@
     "strict": true,
     "skipLibCheck": true,
 
-    /* Paths & Aliases */
-    "baseUrl": "./src"
-
-    // "paths": { "#utils/*": ["utils/*"] }
+    "baseUrl": "./",
+    "paths": {
+      "@assets/*": ["assets/*"],
+      "@core/*": ["src/core/*"],
+      "@commands/*": ["src/commands/*"],
+      "@events/*": ["src/events/*"],
+      "@client/*": ["src/client/*"],
+      "@utils/*": ["src/utils/*"],
+      "@types/*": ["src/types/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
