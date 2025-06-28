@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'url';
-import { BotClient } from '../client/BotClient';
-import { logger } from '../utils/logger';
+import { BotClient } from '@client/BotClient';
+import { logger } from '@utils/logger';
 
 export async function loadEvents(client: BotClient): Promise<void> {
   const eventsDir = path.resolve(__dirname, '../events');
