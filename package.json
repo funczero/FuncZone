@@ -5,10 +5,11 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
+    "prepare": "npm install tsconfig-paths",
     "preinstall": "ts-node src/scripts/preinstall.ts",
     "build": "tsc",
-    "start": "npm install && npm run preinstall && npm run build && node dist/index.js",
-    "dev": "npm install && ts-node src/index.ts",
+    "start": "npm run prepare && npm run preinstall && npm run build && node -r tsconfig-paths/register dist/index.js",
+    "dev": "npm run prepare && ts-node --require tsconfig-paths/register src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "keywords": ["discord", "bot", "typescript", "modular", "automation"],
@@ -19,7 +20,8 @@
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
     "moment-timezone": "^0.5.40",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",
