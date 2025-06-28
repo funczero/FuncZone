@@ -2,8 +2,8 @@
 import 'dotenv/config'
 
 // Core
-import { logger } from '@utils/logger'
-import { startBot } from '@core/loader'
+import { logger } from './utils/logger'
+import { startBot } from './core/loader'
 
 // Verificação de variáveis obrigatórias
 const REQUIRED_ENV = ['DISCORD_TOKEN']
