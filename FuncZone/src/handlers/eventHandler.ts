@@ -1,8 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'url';
-import { BotClient } from '../client/BotClient';
-import { logger } from '../utils/logger';
+import { pathToFileURL, fileURLToPath } from 'url';
+import { BotClient } from '../client/BotClient.js';
+import { logger } from '../utils/logger.js';
+
+// Simular __dirname no ambiente ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function loadEvents(client: BotClient): Promise<void> {
   const eventsDir = path.resolve(__dirname, '../events');
