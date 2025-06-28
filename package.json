@@ -15,7 +15,7 @@
     "#types/*": "./dist/types/*.js"
   },
   "scripts": {
-    "preinstall": "ts-node scripts/preinstall.ts",
+    "preinstall": "node scripts/preinstall.js",
     "build": "tsc",
     "start": "npm run preinstall && npm run build && node dist/index.js",
     "dev": "ts-node src/index.ts",
@@ -29,7 +29,7 @@
     "winston": "^3.11.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
+    "@types-node": "^20.11.19",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
     "eslint": "^8.56.0",
