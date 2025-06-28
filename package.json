@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "npm install tsconfig-paths",
     "preinstall": "ts-node src/scripts/preinstall.ts",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
     "start": "npm run prepare && npm run preinstall && npm run build && node -r tsconfig-paths/register dist/index.js",
     "dev": "npm run prepare && ts-node --require tsconfig-paths/register src/index.ts",
     "lint": "eslint . --ext .ts"
