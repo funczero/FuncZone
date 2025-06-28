@@ -12,7 +12,7 @@
     "lint": "eslint . --ext .ts"
   },
   "keywords": ["discord", "bot", "typescript", "modular", "automation"],
-  "author": "FuncZero",
+  "author": "funczero",
   "license": "MIT",
   "dependencies": {
     "chalk": "^5.3.0",
