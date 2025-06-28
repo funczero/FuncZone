@@ -31,7 +31,7 @@ export class BotClient extends Client {
   }
 
   /**
-   * Inicia o bot com o token fornecido.
+   * Inicia o bot com o token fornecido
    * @param token Token do bot (via .env)
    */
   public async start(token: string): Promise<void> {
