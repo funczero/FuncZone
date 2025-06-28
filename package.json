@@ -15,7 +15,7 @@
     "#types/*": "./dist/types/*.js"
   },
   "scripts": {
-    "preinstall": "node src/scripts/preinstall.js",
+    "preinstall": "node scripts/preinstall.js",
     "build": "tsc",
     "start": "npm run preinstall && npm run build && node dist/index.js",
     "dev": "ts-node src/index.ts",
