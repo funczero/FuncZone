@@ -1,9 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'url';
-import { BotClient } from '../client/BotClient';
-import type { Command } from '../types';
-import { logger } from '../utils/logger';
+import { pathToFileURL, fileURLToPath } from 'url';
+import { BotClient } from '../client/BotClient.js';
+import type { Command } from '../types/index.js';
+import { logger } from '../utils/logger.js';
+
+// Simula __dirname em ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * Carrega recursivamente todos os comandos da pasta /commands
