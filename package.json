@@ -1,7 +1,7 @@
 {
   "name": "funczone",
   "version": "1.0.0",
-  "description": "Bot para mensagens de boas vindas",
+  "description": "Boas-vindas automáticas e alertas de Boost para meu servidor no Discord.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
