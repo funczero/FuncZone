@@ -3,17 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",
-  "imports": {
-    "#utils/*": "./dist/utils/*.js",
-    "#core/*": "./dist/core/*.js",
-    "#client/*": "./dist/client/*.js",
-    "#config/*": "./dist/config/*.js",
-    "#assets/*": "./dist/assets/*.js",
-    "#commands/*": "./dist/commands/*.js",
-    "#events/*": "./dist/events/*.js",
-    "#handlers/*": "./dist/handlers/*.js",
-    "#types/*": "./dist/types/*.js"
-  },
   "scripts": {
     "preinstall": "node scripts/preinstall.cjs",
     "build": "tsc",
