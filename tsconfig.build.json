@@ -2,11 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "FuncZone/src",
     "noEmit": false,
     "emitDeclarationOnly": false,
     "sourceMap": false,
     "declaration": true
   },
-  "include": ["src"]
+  "include": ["FuncZone/src"]
 }
