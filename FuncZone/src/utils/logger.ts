@@ -3,7 +3,7 @@ import moment from 'moment-timezone';
 
 const timezone = 'America/Sao_Paulo';
 
-// Níveis personalizados
+// Níveis personalizados de log
 const customLevels = {
   fatal: 0,
   error: 1,
@@ -13,7 +13,7 @@ const customLevels = {
   debug: 5
 };
 
-// Cores personalizadas
+// Cores associadas aos níveis
 const customColors = {
   fatal: 'bgRed',
   error: 'red',
@@ -25,13 +25,13 @@ const customColors = {
 
 winston.addColors(customColors);
 
-// Formato do log
+// Formato de saída do log
 const logFormat = winston.format.printf(({ level, message }) => {
   const timestamp = moment().tz(timezone).format('DD/MM/YYYY HH:mm:ss');
-  return `[${timestamp}] [${level}] ${message}`;
+  return `[${timestamp}] [${level}]: ${message}`;
 });
 
-// Criação do logger
+// Instância do logger com configuração personalizada
 export const logger = winston.createLogger({
   levels: customLevels,
   level: 'debug',
@@ -39,10 +39,8 @@ export const logger = winston.createLogger({
     winston.format.colorize({ all: true }),
     logFormat
   ),
-  transports: [
-    new winston.transports.Console()
-  ]
+  transports: [new winston.transports.Console()]
 });
 
-// Tipagem para uso futuro
+// Tipo auxiliar para uso futuro
 export type Logger = typeof logger;
