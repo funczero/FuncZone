@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     /* Output */
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "outDir": "../../dist",
+    "rootDir": "./",
 
     /* Language & Modules */
     "target": "ES2021",
@@ -18,17 +18,18 @@
     "strict": true,
     "skipLibCheck": true,
 
+    /* Aliases */
     "baseUrl": "./",
     "paths": {
       "@assets/*": ["assets/*"],
-      "@core/*": ["src/core/*"],
-      "@commands/*": ["src/commands/*"],
-      "@events/*": ["src/events/*"],
-      "@client/*": ["src/client/*"],
-      "@utils/*": ["src/utils/*"],
-      "@types/*": ["src/types/*"]
+      "@core/*": ["core/*"],
+      "@commands/*": ["commands/*"],
+      "@events/*": ["events/*"],
+      "@client/*": ["client/*"],
+      "@utils/*": ["utils/*"],
+      "@types/*": ["types/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "include": ["./"],
+  "exclude": ["node_modules", "../../dist", "**/*.test.ts"]
 }
