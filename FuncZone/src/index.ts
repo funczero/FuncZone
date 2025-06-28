@@ -1,22 +1,43 @@
-/**
- * Inicialização principal do projeto FuncZone
- * Este arquivo é o ponto de entrada da aplicação.
- */
+#!/usr/bin/env node
 
-import { config } from 'dotenv';
-config();
+// Carrega suporte a aliases definidos no tsconfig
+import 'tsconfig-paths/register'
 
-import { logger } from '@utils/logger';
-import { startBot } from '@core/loader';
+// Carrega variáveis de ambiente do .env
+import { config as loadEnv } from 'dotenv'
+loadEnv()
 
-// Verificação crítica: token do bot
-if (!process.env.DISCORD_TOKEN) {
-  logger.error('Variável DISCORD_TOKEN ausente no arquivo .env!');
-  process.exit(1);
+// Imports principais
+import { logger } from '@utils/logger'
+import { startBot } from '@core/loader'
+
+// Handlers globais para erros não capturados
+process.on('uncaughtException', (err) => {
+  logger.error('Uncaught Exception:', err)
+  process.exit(1)
+})
+
+process.on('unhandledRejection', (reason) => {
+  logger.error('Unhandled Rejection:', reason)
+  process.exit(1)
+})
+
+// Validação de variáveis de ambiente críticas
+const requiredEnv = ['DISCORD_TOKEN']
+const missing = requiredEnv.filter(key => !process.env[key])
+if (missing.length) {
+  logger.error(`Variáveis de ambiente ausentes: ${missing.join(', ')}`)
+  process.exit(1)
 }
 
-// Inicialização do bot
-startBot().catch((err) => {
-  logger.error(`Falha ao iniciar o bot: ${err}`);
-  process.exit(1);
-});
+// Função principal de inicialização
+;(async () => {
+  try {
+    logger.info('Iniciando FuncZone…')
+    await startBot()
+    logger.info('Bot iniciado com sucesso!')
+  } catch (err) {
+    logger.error('Falha ao iniciar o bot:', err)
+    process.exit(1)
+  }
+})()
