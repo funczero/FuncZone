@@ -26,9 +26,8 @@ process.on('unhandledRejection', reason => {
 (async () => {
   try {
     await startBot();
-    logger.success('Bot iniciado com sucesso!');
   } catch (error) {
-    logger.fatal(`Falha ao iniciar o bot: ${error instanceof Error ? error.stack : error}`);
+    logger.fatal(`Falha ao iniciar o FuncZone: ${error instanceof Error ? error.stack : error}`);
     process.exit(1);
   }
 })();
