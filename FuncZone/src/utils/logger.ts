@@ -1,30 +1,28 @@
 import winston from 'winston';
 import moment from 'moment-timezone';
 
-// Define o fuso horário desejado
 const timezone = 'America/Sao_Paulo';
 
-// Define os níveis personalizados de log
+// Níveis personalizados
 const customLevels = {
   fatal: 0,
   error: 1,
   warn: 2,
   success: 3,
   info: 4,
-  debug: 5,
+  debug: 5
 };
 
-// Cores personalizadas para cada nível
+// Cores personalizadas
 const customColors = {
-  fatal: 'redBG',
+  fatal: 'bgRed',
   error: 'red',
   warn: 'yellow',
   success: 'green',
   info: 'blue',
-  debug: 'magenta',
+  debug: 'magenta'
 };
 
-// Aplica cores ao Winston
 winston.addColors(customColors);
 
 // Formato do log
@@ -42,7 +40,9 @@ export const logger = winston.createLogger({
     logFormat
   ),
   transports: [
-    new winston.transports.Console(),
-    // Exemplo: log para arquivo futuramente
-  ],
+    new winston.transports.Console()
+  ]
 });
+
+// Tipagem para uso futuro
+export type Logger = typeof logger;
