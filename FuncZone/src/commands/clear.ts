@@ -4,7 +4,7 @@ import {
   User,
   PermissionsBitField,
 } from 'discord.js';
-import { icons } from '@assets/icons.ts';
+import { icons } from '../../assets/icons.ts';
 
 export const name = 'clear';
 export const description = 'Apaga mensagens do canal, com suporte a menção de usuário.';
