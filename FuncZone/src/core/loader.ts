@@ -4,7 +4,7 @@ import { loadCommands } from '../handlers/commandHandler';
 import { loadEvents } from '../handlers/eventHandler';
 
 /**
- * Inicializa o bot carregando eventos, comandos e conectando ao Discord.
+ * Inicializa o bot: eventos, comandos, autenticação e listeners de erro.
  */
 export async function startBot(): Promise<void> {
   const client = new BotClient();
@@ -16,26 +16,30 @@ export async function startBot(): Promise<void> {
     logger.info('Carregando comandos...');
     await loadCommands(client);
 
-    // Escuta erros do cliente e do processo
-    client.on('error', (error) => logger.error(`Erro do cliente: ${error.message}`));
-    process.on('unhandledRejection', (reason: unknown) =>
-      logger.error(`Rejeição não tratada: ${String(reason)}`),
-    );
-    process.on('uncaughtException', (error: Error) =>
-      logger.error(`Exceção não capturada: ${error.message}`),
+    // Listeners para capturar falhas inesperadas
+    client.on('error', (error) =>
+      logger.fatal(`Erro interno do cliente Discord: ${error.message}`),
     );
 
-    // Inicia o bot
+    process.on('unhandledRejection', (reason) =>
+      logger.fatal(`Rejeição não tratada: ${reason instanceof Error ? reason.stack : reason}`),
+    );
+
+    process.on('uncaughtException', (error) =>
+      logger.fatal(`Exceção não capturada: ${error.stack}`),
+    );
+
     const token = process.env.DISCORD_TOKEN;
     if (!token) {
-      logger.fatal('Token do Discord não encontrado no ambiente.');
+      logger.fatal('Token do Discord ausente nas variáveis de ambiente.');
       process.exit(1);
     }
 
     await client.start(token);
-    logger.success(`Bot conectado como ${client.user?.tag}`);
+    logger.success(`FuncZone autenticado como ${client.user?.tag}`);
   } catch (error) {
-    logger.fatal(`Falha crítica ao iniciar o bot: ${String(error)}`);
+    const message = error instanceof Error ? error.stack : String(error);
+    logger.fatal(`Falha crítica ao iniciar o FuncZone:\n${message}`);
     process.exit(1);
   }
 }
