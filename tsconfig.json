@@ -18,17 +18,8 @@
     "strict": true,
     "skipLibCheck": true,
 
-    /* Aliases */
-    "baseUrl": "./",
-    "paths": {
-      "@assets/*": ["assets/*"],
-      "@core/*": ["core/*"],
-      "@commands/*": ["commands/*"],
-      "@events/*": ["events/*"],
-      "@client/*": ["client/*"],
-      "@utils/*": ["utils/*"],
-      "@types/*": ["types/*"]
-    }
+    /* Módulo base padrão */
+    "baseUrl": "./"
   },
   "include": ["./"],
   "exclude": ["node_modules", "../../dist", "**/*.test.ts"]
