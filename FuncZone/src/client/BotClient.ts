@@ -36,7 +36,6 @@ export class BotClient extends Client {
     try {
       logger.info('Conectando ao Discord...');
       await this.login(token);
-      logger.success(`Autenticado como ${this.user?.tag}`);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       logger.fatal(`Falha na autenticação: ${message}`);
