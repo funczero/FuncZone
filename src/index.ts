@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { log } from '@utils/logger';
-import { startBot } from '@core/loader';
-import { env } from '@config';
+import { log } from './utils/logger';
+import { startBot } from './core/loader';
+import { env } from './config';
 
 // Validação de variáveis obrigatórias
 const requiredKeys = ['discordToken'] as const;
