@@ -1,5 +1,6 @@
 import { Interaction, Client, ButtonInteraction } from 'discord.js';
 import { handleVerification } from '../interactions/handleVerification.js';
+import { handleHelpNavigation } from '../interactions/helpNavigator.js';
 import { logger } from '../utils/logger.js';
 
 export default async function interactionCreate(interaction: Interaction, client: Client): Promise<void> {
@@ -8,12 +9,15 @@ export default async function interactionCreate(interaction: Interaction, client
   try {
     switch (interaction.customId) {
       case 'verify_user':
-        await handleVerification(interaction);
-        break;
+        return handleVerification(interaction);
 
-      // Mais botões aqui futuramente
+      case 'help_next':
+      case 'help_back':
+        return handleHelpNavigation(interaction, client);
+
+      // Mais cases específicos
       default:
-        break;
+        return;
     }
   } catch (error) {
     logger.error(`Erro ao lidar com botão "${interaction.customId}": ${String(error)}`);
