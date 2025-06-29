@@ -1,7 +1,7 @@
-import type { Message, TextChannel, User } from 'discord.js';
+import type { Message, TextBasedChannel, User } from 'discord.js';
 
 export async function waitForResponse(
-  channel: TextChannel,
+  channel: TextBasedChannel,
   user: User,
   question: string,
   timeout = 15000
@@ -16,9 +16,12 @@ export async function waitForResponse(
       errors: ['time']
     });
 
+    const answer = collected.first();
+    console.log(`🗣️ ${user.username} respondeu:`, answer?.content);
+
     await prompt.delete().catch(() => {});
-    await collected.first()?.delete().catch(() => {});
-    return collected.first()?.content ?? null;
+    await answer?.delete().catch(() => {});
+    return answer?.content ?? null;
   } catch {
     await prompt.edit('⏰ Tempo esgotado. Tente novamente.').then(msg => {
       setTimeout(() => msg.delete().catch(() => {}), 5000);
