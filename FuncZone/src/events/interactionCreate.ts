@@ -1,7 +1,7 @@
 import { Interaction, Client, ButtonInteraction } from 'discord.js';
-import { handleHelpNavigation } from '../interactions/helpNavigator.js';
-import { handleVerification } from '../interactions/verifyRouter.js';
-import { logger } from '../utils/logger.js';
+import { handleHelpNavigation } from '../interactions/helpNavigator.ts';
+import { handleVerification } from '../interactions/verifyRouter.ts';
+import { logger } from '../utils/logger.ts';
 
 export default async function interactionCreate(interaction: Interaction, client: Client): Promise<void> {
   if (!interaction.isButton()) return;
