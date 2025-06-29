@@ -15,19 +15,10 @@
     "forceConsistentCasingInFileNames": true,
     "allowArbitraryExtensions": false,
 
-    /* Caminhos inteligentes para imports */
-    "baseUrl": "./src",
-    "paths": {
-      "@core/*": ["core/*"],
-      "@utils/*": ["utils/*"],
-      "@events/*": ["events/*"],
-      "@config/*": ["config/*"],
-      "@services/*": ["services/*"]
-    },
-
     /* Regras de verificação */
     "strict": true,
-    "skipLibCheck": true,
-
-    /* Output moderno e limpo */
-    "remove
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/*.test.ts", "node_modules"]
+}
