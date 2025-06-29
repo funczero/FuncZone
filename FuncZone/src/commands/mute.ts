@@ -4,7 +4,7 @@ import {
   Message,
   PermissionsBitField
 } from 'discord.js';
-import { colors, icons } from '../../assets';
+import { colors, icons } from '../../assets/icons';
 import type { Command } from '../types';
 
 /**
