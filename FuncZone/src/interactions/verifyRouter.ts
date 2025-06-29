@@ -1,5 +1,5 @@
 import { ButtonInteraction } from 'discord.js';
-import { verificationConfig } from '../verification.config.ts';
+import { verificationConfig } from '../verification/verification.config.ts';
 import { logger } from '../utils/logger';
 
 export async function handleVerification(interaction: ButtonInteraction) {
