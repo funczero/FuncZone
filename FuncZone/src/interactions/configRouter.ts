@@ -1,74 +1,71 @@
 import {
-  StringSelectMenuInteraction,
+  ChannelSelectMenuInteraction,
   ButtonInteraction,
   TextBasedChannel
 } from 'discord.js';
 import { configStore } from '../config/configStore.js';
 import { logger } from '../utils/logger.js';
-import { waitForResponse } from '../utils/waitForResponse.js';
 import { createVerificationComponents } from '../verification/createVerificationEmbed.js';
+import { createConfigModal } from '../ui/createConfigModal.js';
 
-export async function handleConfigInteraction(
-  interaction: StringSelectMenuInteraction | ButtonInteraction
-) {
+type ConfigInteraction = ChannelSelectMenuInteraction | ButtonInteraction;
+
+export async function handleConfigInteraction(interaction: ConfigInteraction) {
   const guildId = interaction.guildId;
   if (!guildId || !interaction.guild || !interaction.channel?.isTextBased()) return;
 
   try {
-    const channel = interaction.channel as TextBasedChannel;
-    const user = interaction.user;
+    // 📡 Seleção de canal
+    if (interaction.isChannelSelectMenu() && interaction.customId === 'config_channel') {
+      const selectedChannelId = interaction.values[0];
+      configStore.set(guildId, { channelId: selectedChannelId });
 
-    if (interaction.isStringSelectMenu()) {
-      const selected = interaction.values[0];
-      await interaction.deferReply({ ephemeral: true });
+      return interaction.reply({
+        content: `📺 Canal de verificação definido: <#${selectedChannelId}>`,
+        ephemeral: true
+      });
+    }
 
-      switch (selected) {
-        case 'config_role': {
-          const roleName = await waitForResponse(channel, user, '👤 Qual o nome exato do cargo de verificação?');
-          if (!roleName) return interaction.editReply({ content: '⏹️ Operação cancelada.' });
-
-          configStore.set(guildId, { roleName });
-          return interaction.editReply({ content: `✅ Cargo atualizado para **${roleName}**.` });
+    // 🔘 Botões do painel
+    if (interaction.isButton()) {
+      switch (interaction.customId) {
+        case 'config_edit_fields': {
+          return interaction.showModal(createConfigModal());
         }
 
-        case 'config_message': {
-          const msg = await waitForResponse(channel, user, '📨 Qual a nova mensagem de boas-vindas?');
-          if (!msg) return interaction.editReply({ content: '⏹️ Operação cancelada.' });
-
-          configStore.set(guildId, { message: msg });
-          return interaction.editReply({ content: '✅ Mensagem atualizada com sucesso.' });
-        }
-
-        case 'config_bots': {
-          const response = await waitForResponse(channel, user, '🤖 Permitir bots se verificarem? Responda com `sim` ou `não`.');
-          if (!response) return interaction.editReply({ content: '⏹️ Operação cancelada.' });
-
-          const allowBots = ['sim', 's', 'yes', 'y'].includes(response.toLowerCase());
-          configStore.set(guildId, { allowBots });
-          return interaction.editReply({
-            content: `✅ Bots ${allowBots ? 'agora podem' : 'não podem mais'} se verificar.`
+        case 'config_reset': {
+          configStore.reset(guildId);
+          return interaction.reply({
+            content: '🔁 Configurações restauradas para os padrões.',
+            ephemeral: true
           });
         }
 
-        case 'config_buttons': {
-          return interaction.editReply({ content: '🔘 Personalização de botões ainda será implementada!' });
+        case 'config_save': {
+          return interaction.reply({
+            content: '💾 As configurações são salvas automaticamente a cada alteração!',
+            ephemeral: true
+          });
         }
 
-        default:
-          return interaction.editReply({ content: '❌ Opção inválida.' });
-      }
-    }
-
-    if (interaction.isButton()) {
-      switch (interaction.customId) {
-        case 'config_save':
-          return interaction.reply({ content: '💾 As configurações já são salvas automaticamente!', ephemeral: true });
-
-        case 'config_reset':
-          configStore.reset(guildId);
-          return interaction.reply({ content: '🔁 Configurações restauradas para os padrões.', ephemeral: true });
-
         case 'config_publish': {
+          const config = configStore.get(guildId);
+
+          if (!config.channelId) {
+            return interaction.reply({
+              content: '⚠️ Canal de verificação não definido!',
+              ephemeral: true
+            });
+          }
+
+          const targetChannel = interaction.guild.channels.cache.get(config.channelId);
+          if (!targetChannel?.isTextBased()) {
+            return interaction.reply({
+              content: '❌ O canal selecionado não é válido ou acessível.',
+              ephemeral: true
+            });
+          }
+
           const { embed, components } = createVerificationComponents(guildId);
 
           if (!components[0]?.components.length) {
@@ -78,8 +75,11 @@ export async function handleConfigInteraction(
             });
           }
 
-          await interaction.channel.send({ embeds: [embed], components });
-          return interaction.reply({ content: '📤 Embed de verificação enviado com sucesso!', ephemeral: true });
+          await targetChannel.send({ embeds: [embed], components });
+          return interaction.reply({
+            content: `📤 Painel de verificação enviado para <#${config.channelId}>`,
+            ephemeral: true
+          });
         }
 
         default:
@@ -88,10 +88,9 @@ export async function handleConfigInteraction(
     }
   } catch (error) {
     logger.error(`Erro na configuração (${guildId}): ${String(error)}`);
-
     if (interaction.isRepliable()) {
       return interaction.reply({
-        content: '❌ Ocorreu um erro ao processar a configuração. Verifique os logs.',
+        content: '❌ Ocorreu um erro ao processar a configuração.',
         ephemeral: true
       });
     }
