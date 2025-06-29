@@ -4,57 +4,54 @@ import { fileURLToPath } from 'url';
 import winston from 'winston';
 import moment from 'moment-timezone';
 
-// Resolve __dirname no contexto ESM
+// Emula __dirname em ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Garante que a pasta de logs exista
+// Cria pasta de logs se necessário
 const logDir = path.resolve(__dirname, '../../logs');
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }
 
-// Timestamp personalizado com fuso horário e formato brasileiro
+// Timestamp formatado corretamente para São Paulo
 const timestampFormat = winston.format((info) => {
-  info.timestamp = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
+  const now = moment().tz('America/Sao_Paulo');
+  info.timestamp = now.format('DD/MM/YYYY HH:mm:ss');
   return info;
 });
 
-// Layout final dos logs
-const logFormat = winston.format.combine(
-  timestampFormat(),
-  winston.format.printf(({ timestamp, level, message }) => {
-    return `[${timestamp}] [${level.toUpperCase()}]: ${message}`;
-  })
-);
-
-// Transports configurados para console e arquivos
-const transports: winston.transport[] = [
-  new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.colorize({ all: true }),
-      logFormat
-    ),
-  }),
-  new winston.transports.File({
-    filename: path.join(logDir, 'error.log'),
-    level: 'error',
-    format: logFormat,
-  }),
-  new winston.transports.File({
-    filename: path.join(logDir, 'combined.log'),
-    format: logFormat,
-  }),
-];
-
-// Instância principal
-export const logger = winston.createLogger({
-  level: 'debug',
-  levels: winston.config.npm.levels,
-  transports,
+// Formato base dos logs
+const baseFormat = winston.format.printf(({ timestamp, level, message }) => {
+  return `[${timestamp}] [${level.toUpperCase()}]: ${message}`;
 });
 
-// Atalhos
+// Logger configurado com precisão
+export const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.combine(
+    timestampFormat(),
+    baseFormat
+  ),
+  transports: [
+    new winston.transports.File({
+      filename: path.join(logDir, 'error.log'),
+      level: 'error'
+    }),
+    new winston.transports.File({
+      filename: path.join(logDir, 'combined.log')
+    }),
+    new winston.transports.Console({
+      format: winston.format.combine(
+        timestampFormat(),
+        winston.format.colorize({ all: true }),
+        baseFormat
+      )
+    })
+  ]
+});
+
+// Atalhos simples e claros
 export const log = {
   debug: (msg: string) => logger.debug(msg),
   info: (msg: string) => logger.info(msg),
