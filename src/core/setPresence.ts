@@ -12,5 +12,5 @@ export function setBotPresence(client: Client): void {
     ]
   });
 
-  log.info('🎮 Presença definida: Não perturbe | Jogando FuncZone');
+  log.info('Presença definida: Não perturbe | Jogando FuncZone');
 }
