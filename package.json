@@ -1,19 +1,29 @@
 {
   "name": "funczone",
   "version": "1.0.0",
-  "description": "Boas-vindas automáticas e alertas de Boost para meu servidor no Discord.",
+  "description": "Bot Discord modular em TypeScript com boas-vindas automatizadas e alertas de Boost.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "prepare": "npm install tsconfig-paths",
     "postinstall": "ts-node ./src/scripts/preinstall.ts",
-    "build": "./node_modules/.bin/tsc --project tsconfig.build.json",
+    "build": "tsc --project tsconfig.build.json",
     "build:clean": "rm -rf dist && npm run build",
     "start": "npm run prepare && npm run build && node -r tsconfig-paths/register ./dist/index.js",
     "dev": "npm run prepare && ts-node --require tsconfig-paths/register ./src/index.ts",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
   },
-  "keywords": ["discord", "bot", "typescript", "modular", "automation"],
+  "keywords": [
+    "discord",
+    "discord-bot",
+    "typescript",
+    "winston",
+    "automation",
+    "modular-architecture",
+    "boost-alert",
+    "welcome-system"
+  ],
   "author": "funczero",
   "license": "MIT",
   "dependencies": {
@@ -21,9 +31,9 @@
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
     "moment-timezone": "^0.5.40",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5",
-    "winston": "^3.11.0",
-    "tsconfig-paths": "^4.2.0"
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",
@@ -31,5 +41,8 @@
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
     "ts-node": "^10.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
