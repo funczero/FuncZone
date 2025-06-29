@@ -1,19 +1,21 @@
-import { Events, Interaction, Client, ButtonInteraction } from 'discord.js';
-import { handleVerification } from '../interactions/handleVerification';
-import { logger } from '../utils/logger';
+import { Interaction, Client, ButtonInteraction } from 'discord.js';
+import { handleVerification } from '../interactions/handleVerification.js';
+import { logger } from '../utils/logger.js';
 
-export default {
-  name: Events.InteractionCreate,
+export default async function interactionCreate(interaction: Interaction, client: Client): Promise<void> {
+  if (!interaction.isButton()) return;
 
-  async execute(interaction: Interaction, client: Client) {
-    if (interaction.isButton()) {
-      try {
-        if (interaction.customId === 'verify_user') {
-          return handleVerification(interaction);
-        }
-      } catch (error) {
-        logger.error(`Erro no botão "${interaction.customId}": ${String(error)}`);
-      }
+  try {
+    switch (interaction.customId) {
+      case 'verify_user':
+        await handleVerification(interaction);
+        break;
+
+      // Mais botões aqui futuramente
+      default:
+        break;
     }
+  } catch (error) {
+    logger.error(`Erro ao lidar com botão "${interaction.customId}": ${String(error)}`);
   }
-};
+}
