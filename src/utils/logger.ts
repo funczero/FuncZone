@@ -4,33 +4,33 @@ import { fileURLToPath } from 'url';
 import winston from 'winston';
 import moment from 'moment-timezone';
 
-// Suporte a ES Modules (__dirname)
+// Emula __dirname em ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Garante diretório de logs
+// Garante que a pasta de logs exista
 const logDir = path.resolve(__dirname, '../../logs');
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }
 
-// Função utilitária para gerar timestamp em São Paulo
-const timestamp = () => moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
+// Função de timestamp para São Paulo
+const getTimestamp = () => moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
 
-// Formato base sem cor (para arquivos)
+// Formato limpo (para arquivos)
 const fileFormat = winston.format.printf(({ level, message }) => {
-  return `[${timestamp()}] [${level.toUpperCase()}]: ${message}`;
+  return `[${getTimestamp()}] [${level.toUpperCase()}]: ${message}`;
 });
 
-// Formato com cor para console
+// Formato colorido (para console)
 const consoleFormat = winston.format.combine(
   winston.format.colorize({ all: true }),
   winston.format.printf(({ level, message }) => {
-    return `[${timestamp()}] [${level.toUpperCase()}]: ${message}`;
+    return `[${getTimestamp()}] [${level.toUpperCase()}]: ${message}`;
   })
 );
 
-// Criação do logger
+// Logger construído com formatos distintos por destino
 export const logger = winston.createLogger({
   level: 'debug',
   levels: winston.config.npm.levels,
@@ -39,16 +39,16 @@ export const logger = winston.createLogger({
     new winston.transports.File({
       filename: path.join(logDir, 'error.log'),
       level: 'error',
-      format: winston.format.combine(fileFormat)
+      format: fileFormat
     }),
     new winston.transports.File({
       filename: path.join(logDir, 'combined.log'),
-      format: winston.format.combine(fileFormat)
-    }),
-  ],
+      format: fileFormat
+    })
+  ]
 });
 
-// Atalhos com encerramento controlado
+// Atalhos claros e padronizados
 export const log = {
   debug: (msg: string) => logger.debug(msg),
   info: (msg: string) => logger.info(msg),
