@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
-import { setBotPresence } from './setPresence';
 import { loadEvents } from './loadEvents';
+import { setBotPresence } from './setPresence';
 import { log } from '../utils/logger';
 
 /**
@@ -26,12 +26,18 @@ export async function startBot(): Promise<void> {
     log.fatal(`Falha ao carregar eventos: ${message}`);
   }
 
+  // Define presença após evento 'ready'
+  client.once('ready', () => {
+    setBotPresence(client);
+    log.info(`FuncZone pronto como ${client.user?.tag}`);
+  });
+
   try {
     const token = process.env.DISCORD_TOKEN;
     if (!token) throw new Error('Token do Discord não encontrado em process.env.DISCORD_TOKEN');
 
     await client.login(token);
-    log.info('Client autenticado com sucesso. FuncZone está online!');
+    log.info('Autenticação realizada com sucesso.');
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     log.fatal(`Erro ao autenticar o client Discord: ${message}`);
