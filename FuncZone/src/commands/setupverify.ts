@@ -1,6 +1,6 @@
 import { Message, EmbedBuilder } from 'discord.js';
-import { colors } from '../assets/colors';
-import { icons } from '../assets/icons';
+import { colors } from '../../assets/colors';
+import { icons } from '../../assets/icons';
 import { createVerifyButton } from '../components/verifyButton';
 import type { Command } from '../types';
 
