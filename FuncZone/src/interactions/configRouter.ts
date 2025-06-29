@@ -3,10 +3,10 @@ import {
   ButtonInteraction,
   TextBasedChannel
 } from 'discord.js';
-import { configStore } from '../config/configStore.js';
-import { logger } from '../utils/logger.js';
-import { createVerificationComponents } from '../verification/createVerificationEmbed.js';
-import { createConfigModal } from '../ui/createConfigModal.js';
+import { configStore } from '../config/configStore.ts';
+import { logger } from '../utils/logger.ts';
+import { createVerificationComponents } from '../verification/createVerificationEmbed.ts';
+import { createConfigModal } from '../ui/createConfigModal.ts';
 
 type ConfigInteraction = ChannelSelectMenuInteraction | ButtonInteraction;
 
