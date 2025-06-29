@@ -1,4 +1,3 @@
-// src/core/loadEvents.ts
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
