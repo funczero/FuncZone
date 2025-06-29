@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { logger } from './utils/logger';
+import { log } from './utils/logger';
 import { startBot } from './core/loader';
 import { env } from './config';
 
@@ -8,23 +8,19 @@ const requiredKeys = ['discordToken'] as const;
 const missing = requiredKeys.filter((key) => !env[key]);
 
 if (missing.length > 0) {
-  logger.fatal(`Variáveis ausentes no ambiente: ${missing.join(', ')}`);
-  process.exit(1);
+  log.fatal(`Variáveis ausentes no ambiente: ${missing.join(', ')}`);
 }
 
-// Tratamento global de exceções não capturadas
+// Tratamento global de exceções
 process.on('uncaughtException', (err) => {
-  logger.fatal(`Exceção não capturada:\n${err instanceof Error ? err.stack : err}`);
-  process.exit(1);
+  log.fatal(`Exceção não capturada:\n${err instanceof Error ? err.stack : err}`);
 });
 
 process.on('unhandledRejection', (reason) => {
-  logger.fatal(`Rejeição não tratada:\n${reason instanceof Error ? reason.stack : reason}`);
-  process.exit(1);
+  log.fatal(`Rejeição não tratada:\n${reason instanceof Error ? reason.stack : reason}`);
 });
 
-// Inicialização do bot
+// Inicialização do FuncZone
 startBot().catch((error) => {
-  logger.fatal(`Erro ao iniciar o FuncZone:\n${error instanceof Error ? error.stack : error}`);
-  process.exit(1);
+  log.fatal(`Erro ao iniciar o FuncZone:\n${error instanceof Error ? error.stack : error}`);
 });
