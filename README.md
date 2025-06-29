@@ -8,7 +8,7 @@ Ele serve para:
 
 Abaixo, um exemplo da mensagem que o bot envia quando um novo membro entra no servidor:
 
-![Mensagem de boas-vindas do FuncZone](./FuncZone/assets/preview-welcome.png)
+![Mensagem de boas-vindas do FuncZone](./public/preview.png)
 
 > Esse bot foi feito só para uso pessoal e não está disponível publicamente.
 
