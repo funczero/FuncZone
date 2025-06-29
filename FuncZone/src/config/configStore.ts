@@ -2,7 +2,7 @@ import type { GuildVerificationConfig } from './configSchema.js';
 import { defaultConfig } from './defaults.js';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const CONFIG_PATH = '../data/configs.json';
+const CONFIG_PATH = '../../data/configs.json';
 const configs = new Map<string, GuildVerificationConfig>();
 
 // Carrega do disco ao iniciar
