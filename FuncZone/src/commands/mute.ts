@@ -1,15 +1,14 @@
 import {
   GuildMember,
   EmbedBuilder,
-  Message,
-  PermissionsBitField
+  Message
 } from 'discord.js';
 import { icons } from '../../assets/icons';
 import { colors } from '../../assets/colors';
 import type { Command } from '../types';
 
 /**
- * Converte um valor de tempo curto (ex: 1m, 2h) para milissegundos.
+ * Converte uma duração curta (ex: 10m, 2h, 1d) para milissegundos.
  */
 function convertToMilliseconds(tempo: string): number | null {
   const regex = /^(\d+)([smhd])$/;
@@ -28,10 +27,10 @@ function convertToMilliseconds(tempo: string): number | null {
   }
 }
 
-export const mute: Command = {
+const command: Command = {
   name: 'mute',
   description: 'Aplica um timeout (mute) em um membro.',
-  usage: '${currentPrefix}mute <@usuário> <duração> [motivo]',
+  usage: '.mute <@usuário> <duração> [motivo]',
   userPermissions: ['ModerateMembers'],
   botPermissions: ['ModerateMembers'],
   deleteMessage: true,
@@ -76,7 +75,7 @@ export const mute: Command = {
           new EmbedBuilder()
             .setColor(colors.yellow)
             .setAuthor({
-              name: 'Duração inválida. Forneça um valor válido (ex: 1m, 1h, 1d).',
+              name: 'Duração inválida. Use algo como 1m, 1h ou 1d.',
               iconURL: icons.icon_attention
             })
         ],
@@ -86,52 +85,4 @@ export const mute: Command = {
 
     if (!membro.moderatable) {
       return message.channel.send({
-        embeds: [
-          new EmbedBuilder()
-            .setColor(colors.yellow)
-            .setAuthor({
-              name: 'Este usuário não pode ser silenciado devido às suas permissões.',
-              iconURL: icons.icon_attention
-            })
-        ],
-        allowedMentions: { repliedUser: false }
-      });
-    }
-
-    try {
-      await membro.timeout(duracao, motivo);
-      logModerationAction(message.guild!.id, message.author.id, 'Mute', membro.id, motivo);
-
-      const embed = new EmbedBuilder()
-        .setTitle('<:Mutado:1355700779859574954> Punição aplicada')
-        .setColor(colors.red)
-        .setDescription(`${membro} (\`${membro.id}\`) foi mutado(a)!`)
-        .addFields(
-          { name: 'Duração', value: `\`${tempo}\``, inline: true },
-          { name: 'Motivo', value: `\`${motivo}\``, inline: true }
-        )
-        .setThumbnail(membro.user.displayAvatarURL({ dynamic: true }))
-        .setFooter({
-          text: message.author.username,
-          iconURL: message.author.displayAvatarURL({ dynamic: true })
-        })
-        .setTimestamp();
-
-      return message.channel.send({ embeds: [embed] });
-
-    } catch (error) {
-      console.error(error);
-      return message.channel.send({
-        embeds: [
-          new EmbedBuilder()
-            .setColor(colors.yellow)
-            .setAuthor({
-              name: 'Não foi possível silenciar o usuário devido a um erro.',
-              iconURL: icons.icon_attention
-            })
-        ],
-        allowedMentions: { repliedUser: false }
-      });
-    }
-  }
-};
+        embeds
