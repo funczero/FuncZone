@@ -101,7 +101,7 @@ const command: Command = {
       await membro.timeout(duracao, motivo);
 
       const embed = new EmbedBuilder()
-        .setTitle('<:Mutado:1355700779859574954> Punição aplicada')
+        .setTitle('<:mute:1207381613185339473> Punição aplicada')
         .setColor(colors.red)
         .setDescription(`${membro} (\`${membro.id}\`) foi mutado(a)!`)
         .addFields(
