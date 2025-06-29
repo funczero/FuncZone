@@ -8,27 +8,25 @@ import moment from 'moment-timezone';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Diretório dos logs
+// Diretório de logs
 const logDir = path.resolve(__dirname, '../../logs');
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }
 
-// Timestamp formatado (timezone São Paulo)
-const getTimestamp = (): string => moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
+// Timestamp em São Paulo
+const getTimestamp = (): string =>
+  moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
 
-// Custom colors por nível
+// Cores personalizadas por nível
 winston.addColors({
   error: 'bold red',
   warn: 'yellow',
   info: 'cyan',
-  http: 'magenta',
-  verbose: 'blue',
-  debug: 'gray',
-  silly: 'white'
+  debug: 'gray'
 });
 
-// Formato para logs em arquivos
+// Formato para arquivos
 const fileFormat = winston.format.combine(
   winston.format.timestamp({ format: getTimestamp }),
   winston.format.printf(({ level, message, timestamp }) => {
@@ -36,16 +34,16 @@ const fileFormat = winston.format.combine(
   })
 );
 
-// Formato para logs no console (com cores)
+// Formato seguro para console (evita códigos mal renderizados)
 const consoleFormat = winston.format.combine(
-  winston.format.colorize({ all: true }),
   winston.format.timestamp({ format: getTimestamp }),
+  winston.format.colorize({ message: true }), // Só colore a mensagem
   winston.format.printf(({ level, message, timestamp }) => {
     return `[${timestamp}] [${level.toUpperCase()}]: ${message}`;
   })
 );
 
-// Winston Logger
+// Criação do logger
 export const logger = winston.createLogger({
   level: 'debug',
   levels: winston.config.npm.levels,
@@ -64,13 +62,13 @@ export const logger = winston.createLogger({
       format: fileFormat
     }),
     new winston.transports.File({
-      filename: path.join(logDir, 'debug.log'),
-      level: 'debug',
+      filename: path.join(logDir, 'info.log'),
+      level: 'info',
       format: fileFormat
     }),
     new winston.transports.File({
-      filename: path.join(logDir, 'info.log'),
-      level: 'info',
+      filename: path.join(logDir, 'debug.log'),
+      level: 'debug',
       format: fileFormat
     }),
     new winston.transports.File({
@@ -81,7 +79,7 @@ export const logger = winston.createLogger({
   exitOnError: false
 });
 
-// Atalhos organizados e padronizados
+// Atalhos padronizados
 export const log = {
   debug: (msg: string) => logger.debug(msg),
   info: (msg: string) => logger.info(msg),
