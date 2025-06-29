@@ -8,54 +8,87 @@ import moment from 'moment-timezone';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Garante que a pasta de logs exista
+// Diretório dos logs
 const logDir = path.resolve(__dirname, '../../logs');
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }
 
-// Função de timestamp para São Paulo
-const getTimestamp = () => moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
+// Timestamp formatado (timezone São Paulo)
+const getTimestamp = (): string => moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
 
-// Formato limpo (para arquivos)
-const fileFormat = winston.format.printf(({ level, message }) => {
-  return `[${getTimestamp()}] [${level.toUpperCase()}]: ${message}`;
+// Custom colors por nível
+winston.addColors({
+  error: 'bold red',
+  warn: 'yellow',
+  info: 'cyan',
+  http: 'magenta',
+  verbose: 'blue',
+  debug: 'gray',
+  silly: 'white'
 });
 
-// Formato colorido (para console)
-const consoleFormat = winston.format.combine(
-  winston.format.colorize({ all: true }),
-  winston.format.printf(({ level, message }) => {
-    return `[${getTimestamp()}] [${level.toUpperCase()}]: ${message}`;
+// Formato para logs em arquivos
+const fileFormat = winston.format.combine(
+  winston.format.timestamp({ format: getTimestamp }),
+  winston.format.printf(({ level, message, timestamp }) => {
+    return `[${timestamp}] [${level.toUpperCase()}]: ${message}`;
   })
 );
 
-// Logger construído com formatos distintos por destino
+// Formato para logs no console (com cores)
+const consoleFormat = winston.format.combine(
+  winston.format.colorize({ all: true }),
+  winston.format.timestamp({ format: getTimestamp }),
+  winston.format.printf(({ level, message, timestamp }) => {
+    return `[${timestamp}] [${level.toUpperCase()}]: ${message}`;
+  })
+);
+
+// Winston Logger
 export const logger = winston.createLogger({
   level: 'debug',
   levels: winston.config.npm.levels,
   transports: [
-    new winston.transports.Console({ format: consoleFormat }),
+    new winston.transports.Console({
+      format: consoleFormat
+    }),
     new winston.transports.File({
       filename: path.join(logDir, 'error.log'),
       level: 'error',
       format: fileFormat
     }),
     new winston.transports.File({
+      filename: path.join(logDir, 'warn.log'),
+      level: 'warn',
+      format: fileFormat
+    }),
+    new winston.transports.File({
+      filename: path.join(logDir, 'debug.log'),
+      level: 'debug',
+      format: fileFormat
+    }),
+    new winston.transports.File({
+      filename: path.join(logDir, 'info.log'),
+      level: 'info',
+      format: fileFormat
+    }),
+    new winston.transports.File({
       filename: path.join(logDir, 'combined.log'),
       format: fileFormat
     })
-  ]
+  ],
+  exitOnError: false
 });
 
-// Atalhos claros e padronizados
+// Atalhos organizados e padronizados
 export const log = {
   debug: (msg: string) => logger.debug(msg),
   info: (msg: string) => logger.info(msg),
   warn: (msg: string) => logger.warn(msg),
   error: (msg: string) => logger.error(msg),
   fatal: (msg: string) => {
-    logger.error(`[FATAL] ${msg}`);
+    logger.error(`[FATAL]: ${msg}`);
     process.exit(1);
   }
 };
