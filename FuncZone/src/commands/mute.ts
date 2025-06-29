@@ -47,7 +47,7 @@ const command: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Mencione um usuário para executar esta ação.',
-              iconURL: icons.icon_attention
+              iconURL: icons.attention
             })
         ],
         allowedMentions: { repliedUser: false }
@@ -61,7 +61,7 @@ const command: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Defina um tempo de duração para prosseguir (ex: 1m, 1h, 1d).',
-              iconURL: icons.icon_attention
+              iconURL: icons.attention
             })
         ],
         allowedMentions: { repliedUser: false }
@@ -76,7 +76,7 @@ const command: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Duração inválida. Use algo como 1m, 1h ou 1d.',
-              iconURL: icons.icon_attention
+              iconURL: icons.attention
             })
         ],
         allowedMentions: { repliedUser: false }
@@ -90,7 +90,7 @@ const command: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Este usuário não pode ser silenciado com as permissões atuais.',
-              iconURL: icons.icon_attention
+              iconURL: icons.attention
             })
         ],
         allowedMentions: { repliedUser: false }
@@ -125,7 +125,7 @@ const command: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Não foi possível silenciar o usuário devido a um erro.',
-              iconURL: icons.icon_attention
+              iconURL: icons.attention
             })
         ],
         allowedMentions: { repliedUser: false }
