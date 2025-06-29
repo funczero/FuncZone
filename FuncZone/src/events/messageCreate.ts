@@ -27,7 +27,7 @@ export default async function messageCreate(message: Message, client: BotClient)
 
   try {
     logger.info(`Comando executado: ${command.name} por ${message.author.tag}`);
-    await command.execute(message, args);
+    await command.execute(message, args, client);
   } catch (error) {
     logger.error(`Erro no comando "${command.name}": ${String(error)}`);
     await message.reply('⚠️ Não foi possível executar este comando.');
