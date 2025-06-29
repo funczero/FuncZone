@@ -47,7 +47,7 @@ export const mute: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Mencione um usuário para executar esta ação.',
-              iconURL: emojis.icon_attention
+              iconURL: icons.icon_attention
             })
         ],
         allowedMentions: { repliedUser: false }
@@ -61,7 +61,7 @@ export const mute: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Defina um tempo de duração para prosseguir (ex: 1m, 1h, 1d).',
-              iconURL: emojis.icon_attention
+              iconURL: icons.icon_attention
             })
         ],
         allowedMentions: { repliedUser: false }
@@ -76,7 +76,7 @@ export const mute: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Duração inválida. Forneça um valor válido (ex: 1m, 1h, 1d).',
-              iconURL: emojis.icon_attention
+              iconURL: icons.icon_attention
             })
         ],
         allowedMentions: { repliedUser: false }
@@ -90,7 +90,7 @@ export const mute: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Este usuário não pode ser silenciado devido às suas permissões.',
-              iconURL: emojis.icon_attention
+              iconURL: icons.icon_attention
             })
         ],
         allowedMentions: { repliedUser: false }
@@ -126,7 +126,7 @@ export const mute: Command = {
             .setColor(colors.yellow)
             .setAuthor({
               name: 'Não foi possível silenciar o usuário devido a um erro.',
-              iconURL: emojis.icon_attention
+              iconURL: icons.icon_attention
             })
         ],
         allowedMentions: { repliedUser: false }
