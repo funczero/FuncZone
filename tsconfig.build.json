@@ -1,12 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "rootDir": "./src",
     "outDir": "./dist",
-    "rootDir": "FuncZone/src",
+    "declaration": true,
     "noEmit": false,
     "emitDeclarationOnly": false,
     "sourceMap": false,
-    "declaration": true
+    "removeComments": true
   },
-  "include": ["FuncZone/src"]
+  "include": ["src/**/*"],
+  "exclude": ["**/*.test.ts", "node_modules"]
 }
