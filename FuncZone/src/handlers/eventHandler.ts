@@ -4,7 +4,7 @@ import { pathToFileURL, fileURLToPath } from 'url';
 import { BotClient } from '../client/BotClient.js';
 import { logger } from '../utils/logger.js';
 
-// Compatibilidade com ESM
+// Simular __dirname no ambiente ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -23,23 +23,22 @@ export async function loadEvents(client: BotClient): Promise<void> {
       } else if (file.endsWith('.ts') || file.endsWith('.js')) {
         try {
           const eventModule = await import(pathToFileURL(filePath).href);
-          const event = eventModule.default;
+          const handler = eventModule.default;
 
-          // Validação do evento moderno: objeto com 'name' e 'execute'
-          if (!event || typeof event.name !== 'string' || typeof event.execute !== 'function') {
-            logger.warn(`Evento ignorado (formato inválido): ${filePath}`);
+          if (typeof handler !== 'function') {
+            logger.warn(`Evento ignorado (sem export default function): ${filePath}`);
             continue;
           }
 
-          // Registrar o evento usando once ou on conforme o nome
-          const handler = (...args: unknown[]) => event.execute(...args, client);
-          const isOnce = ['ready', 'shardReady'].includes(event.name);
+          const eventName = path.basename(file).replace(/\.(ts|js)$/, '');
 
-          isOnce
-            ? client.once(event.name, handler)
-            : client.on(event.name, handler);
+          if (eventName === 'ready') {
+            client.once('ready', (...args) => handler(...args, client));
+          } else {
+            client.on(eventName, (...args) => handler(...args, client));
+          }
 
-          logger.info(`Evento carregado: ${event.name}`);
+          logger.info(`Evento carregado: ${eventName}`);
         } catch (error) {
           logger.error(`Erro ao carregar evento ${file}: ${error}`);
         }
