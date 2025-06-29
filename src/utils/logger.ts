@@ -1,34 +1,54 @@
-import winston from 'winston';
+import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import winston from 'winston';
+import moment from 'moment-timezone';
 
-const logDir = path.join(__dirname, '../../logs');
+// Emula __dirname no contexto de ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Define os formatos
+// Garante que a pasta de logs exista
+const logDir = path.resolve(__dirname, '../../logs');
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
+
+// Formato profissional com horário de São Paulo
 const logFormat = winston.format.combine(
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-  winston.format.printf(({ timestamp, level, message }) => `[${timestamp}] [${level.toUpperCase()}]: ${message}`)
+  winston.format.printf(({ level, message }) => {
+    const timestamp = moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+    return `[${timestamp}] [${level.toUpperCase()}]: ${message}`;
+  })
 );
 
-// Transports para diferentes saídas
-const transports = [
+// Destinos de log
+const transports: winston.transport[] = [
   new winston.transports.Console({
     format: winston.format.combine(
       winston.format.colorize({ all: true }),
       logFormat
     ),
   }),
-  new winston.transports.File({ filename: `${logDir}/error.log`, level: 'error', format: logFormat }),
-  new winston.transports.File({ filename: `${logDir}/combined.log`, format: logFormat }),
+  new winston.transports.File({
+    filename: path.join(logDir, 'error.log'),
+    level: 'error',
+    format: logFormat,
+  }),
+  new winston.transports.File({
+    filename: path.join(logDir, 'combined.log'),
+    format: logFormat,
+  }),
 ];
 
-// Criação do logger
+// Logger centralizado
 export const logger = winston.createLogger({
-  level: 'debug', // mínimo nível exibido
+  level: 'debug',
   levels: winston.config.npm.levels,
   transports,
 });
 
-// Atalho para facilitar
+// Atalhos de uso
 export const log = {
   debug: (msg: string) => logger.debug(msg),
   info: (msg: string) => logger.info(msg),
@@ -39,3 +59,4 @@ export const log = {
     process.exit(1);
   }
 };
+      
