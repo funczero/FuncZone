@@ -1,5 +1,4 @@
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
-import { setBotPresence } from './setPresence';
 import { loadEvents } from './loadEvents';
 import { log } from '../utils/logger';
 
