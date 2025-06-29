@@ -36,7 +36,11 @@ export function createConfigUI() {
     new ButtonBuilder()
       .setCustomId('config_reset')
       .setLabel('🔁 Restaurar padrão')
-      .setStyle(ButtonStyle.Secondary)
+      .setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder()
+      .setCustomId('config_publish')
+      .setLabel('📤 Enviar verificação')
+      .setStyle(ButtonStyle.Primary)
   ];
 
   return [
