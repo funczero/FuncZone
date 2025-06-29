@@ -1,6 +1,6 @@
 import { ButtonInteraction, EmbedBuilder } from 'discord.js';
-import { colors } from '../assets/colors';
-import { icons } from '../assets/icons';
+import { colors } from '../../assets/colors';
+import { icons } from '../../assets/icons';
 
 export async function handleVerification(interaction: ButtonInteraction) {
   const role = interaction.guild?.roles.cache.find(r => r.name.toLowerCase() === 'verificado');
