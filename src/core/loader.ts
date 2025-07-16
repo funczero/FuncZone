@@ -4,7 +4,8 @@ import { setBotPresence } from './setPresence';
 import { log } from '../utils/logger';
 
 /**
- * Inicializa o bot do Discord com intents, eventos e autenticação.
+ * Inicializa o FuncZone com intents, eventos e autenticação.
+ * Define presença inicial e mantém após reconexões (shardResume).
  */
 export async function startBot(): Promise<void> {
   const client = new Client({
@@ -26,10 +27,14 @@ export async function startBot(): Promise<void> {
     log.fatal(`Falha ao carregar eventos: ${message}`);
   }
 
-  // Define presença após evento 'ready'
   client.once('ready', () => {
     setBotPresence(client);
     log.info(`FuncZone pronto como ${client.user?.tag}`);
+  });
+
+  client.on('shardResume', () => {
+    setBotPresence(client);
+    log.warn('Shard reconectada — presença redefinida para "Não Perturbe".');
   });
 
   try {
