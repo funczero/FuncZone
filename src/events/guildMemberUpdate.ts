@@ -10,8 +10,8 @@ export default async function guildMemberUpdate(oldMember: GuildMember, newMembe
     return;
   }
 
-  const oldBoosting = oldMember.premiumSince;
-  const newBoosting = newMember.premiumSince;
+  const oldBoosting = oldMember.premiumSinceTimestamp;
+  const newBoosting = newMember.premiumSinceTimestamp;
 
   if (!oldBoosting && newBoosting) {
     const message = `💜 ${newMember} acabou de impulsionar o servidor! Muito obrigado pelo apoio! 🚀`;
