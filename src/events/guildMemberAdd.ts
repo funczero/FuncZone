@@ -18,8 +18,8 @@ export default async function guildMemberAdd(member: GuildMember) {
     .setDescription([
       'Agora você faz parte da nossa comunidade! Respeite as regras, divirta-se e aproveite ao máximo essa experiência.',
       '',
-      `<:user:1372710533718867978> **ID do usuário**: \`${member.id}\``,
-      `<:members:1372710492761755709> Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`
+      `<:user:1404144437759709265> **ID do usuário**: \`${member.id}\``,
+      `<:members:1404144495108296806> Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`
     ].join('\n'))
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }));
 
