@@ -27,7 +27,7 @@ export async function startBot(): Promise<void> {
     log.fatal(`Falha ao carregar eventos: ${message}`);
   }
 
-  client.once('ready', () => {
+  client.once('clientReady', () => {
     setBotPresence(client);
     log.info(`FuncZone pronto como ${client.user?.tag}`);
   });
