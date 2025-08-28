@@ -21,7 +21,12 @@ export default async function guildMemberAdd(member: GuildMember) {
       `<:user:1404144437759709265> **ID do usuário**: \`${member.id}\``,
       `<:members:1404144495108296806> Com a sua entrada, agora somos **${member.guild.memberCount}** membros!`
     ].join('\n'))
-    .setThumbnail(member.user.displayAvatarURL({ dynamic: true }));
+    .setThumbnail(
+      member.user.displayAvatarURL({
+        extension: member.user.avatar?.startsWith("a_") ? "gif" : "png",
+        size: 1024
+      })
+    );
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -47,3 +52,4 @@ export default async function guildMemberAdd(member: GuildMember) {
     components: [row],
   });
 }
+
